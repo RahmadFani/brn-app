@@ -1,5 +1,6 @@
 import 'package:brn/config/constants.dart';
 import 'package:brn/presentation/screens/agenda/agenda_detail_screen.dart';
+import 'package:brn/presentation/screens/agenda/agenda_qr_screen.dart';
 import 'package:brn/presentation/widgets/custom_scaffold.dart';
 import 'package:brn/presentation/widgets/simple_app_bar_title.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,25 @@ class _AgendaScreenState extends State<AgendaScreen> {
           AgendaItem(),
           AgendaItem(),
         ],
+      ),
+      floatAction: InkWell(
+        onTap: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (ctx) => AgendaQrScreen(),
+            ),
+          );
+        },
+        child: Container(
+          height: 60,
+          width: 60,
+          color: Color(0xFF303F5E),
+          child: Icon(
+            Icons.qr_code,
+            size: 50,
+            color: Colors.white,
+          ),
+        ),
       ),
     );
   }
