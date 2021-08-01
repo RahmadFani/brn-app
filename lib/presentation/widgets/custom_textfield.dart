@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 class CustomTextfield extends StatefulWidget {
   final String label;
   final String hint;
-  CustomTextfield({Key key, this.label, this.hint}) : super(key: key);
+  final double height;
+  CustomTextfield({Key key, this.label, this.hint, this.height})
+      : super(key: key);
 
   @override
   _CustomTextfieldState createState() => _CustomTextfieldState();
@@ -12,7 +14,10 @@ class CustomTextfield extends StatefulWidget {
 class _CustomTextfieldState extends State<CustomTextfield> {
   @override
   Widget build(BuildContext context) {
+    var width = MediaQuery.of(context).size.width;
     return Container(
+      height: widget.height,
+      width: width,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(30),
         color: Colors.white,

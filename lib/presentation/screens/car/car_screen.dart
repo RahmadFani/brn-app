@@ -1,4 +1,6 @@
 import 'package:brn/config/constants.dart';
+import 'package:brn/presentation/screens/car/add_car_screen.dart';
+import 'package:brn/presentation/screens/car/edit_car-screen.dart';
 import 'package:brn/presentation/widgets/auth/title_auth.dart';
 import 'package:brn/presentation/widgets/button/primary_button.dart';
 import 'package:brn/presentation/widgets/custom_modal_bottom_sheet.dart';
@@ -39,7 +41,13 @@ class _CarScreenState extends State<CarScreen> {
             ),
             SizedBox(width: kPaddingS),
             GestureDetector(
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (ctx) => CarScreenAdd(),
+                  ),
+                );
+              },
               child: Icon(
                 Icons.add,
                 color: Colors.white,
@@ -187,7 +195,13 @@ class CarItem extends StatelessWidget {
                         height: 38,
                         width: 38,
                         child: PrimaryButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (ctx) => CarScreenEdit(),
+                              ),
+                            );
+                          },
                           color: Color(0xff0A4788),
                           child: Icon(Icons.edit, color: Colors.white),
                         ),
