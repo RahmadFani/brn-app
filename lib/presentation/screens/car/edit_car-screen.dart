@@ -6,14 +6,14 @@ import 'package:brn/presentation/widgets/custom_textfield.dart';
 import 'package:brn/presentation/widgets/simple_app_bar_title.dart';
 import 'package:flutter/material.dart';
 
-class CarScreenAdd extends StatefulWidget {
-  CarScreenAdd({Key key}) : super(key: key);
+class CarScreenEdit extends StatefulWidget {
+  CarScreenEdit({Key key}) : super(key: key);
 
   @override
-  _CarScreenAddState createState() => _CarScreenAddState();
+  _CarScreenEditState createState() => _CarScreenEditState();
 }
 
-class _CarScreenAddState extends State<CarScreenAdd> {
+class _CarScreenEditState extends State<CarScreenEdit> {
   bool activeDetail = true;
   bool activeKelengkapan = false;
   bool activeFoto = false;
@@ -110,13 +110,23 @@ class _CarScreenAddState extends State<CarScreenAdd> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        CustomAddfile(
-                            text: "Foto Tampak depan STNK",
-                            icon: Icons.add_a_photo),
-                        SizedBox(height: 27),
-                        CustomAddfile(
-                            text: "Foto Belakang depan STNK",
-                            icon: Icons.add_a_photo),
+                        Container(
+                          width: width,
+                          height: 144,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Image.asset('assets/images/stnk.png',
+                              fit: BoxFit.cover),
+                        ),
+                        SizedBox(height: 20),
+                        Container(
+                          width: width,
+                          height: 144,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Image.asset('assets/images/stnk.png',
+                              fit: BoxFit.cover),
+                        ),
                       ],
                     ),
                   )
@@ -129,21 +139,32 @@ class _CarScreenAddState extends State<CarScreenAdd> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        CustomAddfile(
-                            text: "Foto Tampak depan Mobil",
-                            icon: Icons.add_a_photo),
-                        SizedBox(height: 27),
-                        CustomAddfile(
-                            text: "Foto Tampak Belakang Mobil",
-                            icon: Icons.add_a_photo),
-                        SizedBox(height: 27),
-                        CustomAddfile(
-                            text: "Foto Tampak Dalam Depan Mobil",
-                            icon: Icons.add_a_photo),
-                        SizedBox(height: 27),
-                        CustomAddfile(
-                            text: "Foto Tampak Dalam Belakang Mobil",
-                            icon: Icons.add_a_photo),
+                        Container(
+                          width: width,
+                          height: 144,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Image.asset('assets/images/mobile1.png',
+                              fit: BoxFit.cover),
+                        ),
+                        SizedBox(height: 20),
+                        Container(
+                          width: width,
+                          height: 144,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Image.asset('assets/images/mobile2.png',
+                              fit: BoxFit.cover),
+                        ),
+                        SizedBox(height: 20),
+                        Container(
+                          width: width,
+                          height: 144,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Image.asset('assets/images/mobile3.png',
+                              fit: BoxFit.cover),
+                        ),
                       ],
                     ),
                   )
