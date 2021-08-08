@@ -26,13 +26,17 @@ class _CarScreenAddState extends State<CarScreenAdd> {
         activeFoto = false;
       });
     } else if (menu == "kelengkapan") {
-      activeDetail = false;
-      activeKelengkapan = true;
-      activeFoto = false;
+      setState(() {
+        activeDetail = false;
+        activeKelengkapan = true;
+        activeFoto = false;
+      });
     } else {
-      activeDetail = false;
-      activeKelengkapan = false;
-      activeFoto = true;
+      setState(() {
+        activeDetail = false;
+        activeKelengkapan = false;
+        activeFoto = true;
+      });
     }
   }
 
@@ -48,6 +52,10 @@ class _CarScreenAddState extends State<CarScreenAdd> {
       body: Container(
         height: height,
         width: width,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(30),
+          color: Colors.white,
+        ),
         padding: EdgeInsets.all(20),
         child: ListView(
           children: [
@@ -81,6 +89,7 @@ class _CarScreenAddState extends State<CarScreenAdd> {
                 ],
               ),
             ),
+            SizedBox(height: 27),
             activeDetail == true
                 ? Container(
                     height: height,
@@ -158,7 +167,7 @@ class _CarScreenAddState extends State<CarScreenAdd> {
 
   Container filter({@required String label, bool active = false}) {
     return Container(
-      width: 77,
+      padding: EdgeInsets.only(left: 10, right: 10),
       margin: const EdgeInsets.only(right: 20),
       decoration: active
           ? BoxDecoration(

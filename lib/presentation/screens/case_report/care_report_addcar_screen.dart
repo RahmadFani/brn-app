@@ -24,6 +24,7 @@ class _CareReportAddcarScreenState extends State<CareReportAddcarScreen> {
       body: Container(
         height: height,
         width: width,
+        color: Colors.white,
         padding: EdgeInsets.all(20),
         child: ListView(
           children: [

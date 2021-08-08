@@ -26,7 +26,7 @@ class _CustomAddfileState extends State<CustomAddfile> {
           Text(
             widget.text,
             style: TextStyle(
-                color: Color(0xFF4D4D4D), fontFamily: "Poppins", fontSize: 16),
+                color: Color(0xFF4D4D4D), fontFamily: "Poppins", fontSize: 12),
           ),
         ],
       ),

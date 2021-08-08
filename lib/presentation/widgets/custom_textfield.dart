@@ -33,12 +33,6 @@ class _CustomTextfieldState extends State<CustomTextfield> {
             borderRadius: BorderRadius.circular(30.0),
             borderSide: BorderSide(),
           ),
-          prefixIcon: Padding(
-            padding: EdgeInsets.only(
-              left: 15,
-            ), // add padding to adjust icon
-            child: Icon(Icons.search),
-          ),
           //fillColor: Colors.green
         ),
         style: TextStyle(
