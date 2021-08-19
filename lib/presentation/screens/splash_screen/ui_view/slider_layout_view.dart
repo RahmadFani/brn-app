@@ -1,12 +1,18 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
 
 import 'package:brn/config/constants.dart';
+import 'package:brn/config/ip.dart';
+import 'package:brn/model/onboard.dart';
+import 'package:brn/presentation/screens/auth/login_screen.dart';
 import 'package:brn/presentation/screens/dashboard_screen.dart';
 import 'package:brn/presentation/screens/splash_screen/constants/constants.dart';
 import 'package:brn/model/slider.dart';
 import 'package:brn/presentation/widgets/slide_items/slide_dots.dart';
 import 'package:brn/presentation/widgets/slide_items/slide_item.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class SliderLayoutView extends StatefulWidget {
   @override
@@ -15,10 +21,28 @@ class SliderLayoutView extends StatefulWidget {
 
 class _SliderLayoutViewState extends State<SliderLayoutView> {
   int _currentPage = 0;
+  List<OnboardModel> _data = [];
   final PageController _pageController = PageController();
+  bool loading = true;
+  getData() async {
+    Uri url = Uri.parse(IpClass().getip() + '/api/onboardings');
+    final response2 = await http.get(url, headers: {
+      HttpHeaders.acceptHeader: "application/json",
+    });
+    final res = json.decode(response2.body);
+    if (mounted) {
+      setState(() {
+        for (Map data in res['data']) {
+          _data.add(OnboardModel.fromJson(data));
+        }
+        loading = false;
+      });
+    }
+  }
 
   @override
   void initState() {
+    getData();
     super.initState();
     Timer.periodic(const Duration(seconds: 5), (Timer timer) {
       if (_currentPage < 2) {
@@ -90,8 +114,9 @@ class _SliderLayoutViewState extends State<SliderLayoutView> {
               PageView.builder(
                 controller: _pageController,
                 onPageChanged: _onPageChanged,
-                itemCount: sliderArrayList.length,
-                itemBuilder: (ctx, i) => SlideItem(i),
+                itemCount: _data.length,
+                itemBuilder: (ctx, i) => SlideItem(
+                    title: _data[i].title, subTitle: _data[i].description),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),

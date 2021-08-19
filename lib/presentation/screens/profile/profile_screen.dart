@@ -1,4 +1,5 @@
 import 'package:brn/config/constants.dart';
+import 'package:brn/presentation/screens/auth/login_screen.dart';
 import 'package:brn/presentation/screens/car/car_screen.dart';
 import 'package:brn/presentation/screens/case_report/care_report_screen.dart';
 import 'package:brn/presentation/screens/profile/about_screen.dart';
@@ -10,8 +11,33 @@ import 'package:brn/presentation/widgets/custom_scaffold.dart';
 import 'package:brn/presentation/widgets/profile/setting_card.dart';
 import 'package:brn/presentation/widgets/profile/setting_item.dart';
 import 'package:flutter/material.dart';
+import 'package:nb_utils/nb_utils.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
+  @override
+  _ProfileScreenState createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  void checkLogin() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String token = pref.getString("token");
+    if (token == null || token == "") {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (ctx) => LoginScreen(),
+        ),
+      );
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    checkLogin();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(

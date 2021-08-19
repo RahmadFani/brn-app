@@ -5,6 +5,7 @@ import 'package:brn/presentation/widgets/button/primary_button.dart';
 import 'package:flutter/material.dart';
 
 class RegisterDetailScreen extends StatelessWidget {
+  TextEditingController nama = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(

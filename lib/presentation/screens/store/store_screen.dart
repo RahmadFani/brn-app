@@ -2,6 +2,8 @@ import 'package:brn/config/constants.dart';
 import 'package:brn/model/category.dart';
 import 'package:brn/model/slider_model.dart';
 import 'package:brn/presentation/screens/auth/login_screen.dart';
+import 'package:brn/presentation/screens/store/store_detail.dart';
+import 'package:brn/presentation/screens/store/store_header.dart';
 import 'package:brn/presentation/widgets/custom_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -16,6 +18,8 @@ class StoreScreen extends StatefulWidget {
 
 class _StoreScreenState extends State<StoreScreen> {
   PageController bannerPageController = PageController();
+  int _currentTab = 0;
+
   List<Category> mCategoryModel = [
     Category(
       name: 'Spare Part',
@@ -72,50 +76,355 @@ class _StoreScreenState extends State<StoreScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var width = MediaQuery.of(context).size.width;
+    var height = MediaQuery.of(context).size.height;
     return CustomScaffold(
-      appBar: [
-        Text(
-          'Toko BRN',
-          style: TextStyle(
-            fontFamily: 'Montserrat',
-            color: Colors.white,
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
+      appBar: [StoreHeaderComponent()],
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _carousel(),
+          SizedBox(
+            height: 21,
           ),
-        ),
-        Row(
-          children: [
-            Icon(
-              Icons.search,
-              color: Colors.white,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                height: 68,
+                width: 68,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Color(0xFF22D6C4),
+                          Color(0xFF3491D2),
+                        ]),
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.black.withOpacity(0.15),
+                          offset: Offset(2, 4),
+                          blurRadius: 10),
+                    ]),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.people,
+                        color: Colors.white,
+                      ),
+                      SizedBox(
+                        height: 6,
+                      ),
+                      Text(
+                        "Pakaian",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: "Monserrat",
+                            fontSize: 11,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ]),
+              ),
+              Container(
+                height: 68,
+                width: 68,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Color(0xFF46FFDE),
+                          Color(0xFF00D2A0),
+                        ]),
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.black.withOpacity(0.15),
+                          offset: Offset(2, 4),
+                          blurRadius: 10),
+                    ]),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.people,
+                        color: Colors.white,
+                      ),
+                      SizedBox(
+                        height: 6,
+                      ),
+                      Text(
+                        "Otomotif",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: "Monserrat",
+                            fontSize: 11,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ]),
+              ),
+              Container(
+                height: 68,
+                width: 68,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Color(0xFFFB433D),
+                          Color(0xFFFB433D),
+                        ]),
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.black.withOpacity(0.15),
+                          offset: Offset(2, 4),
+                          blurRadius: 10),
+                    ]),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.people,
+                        color: Colors.white,
+                      ),
+                      SizedBox(
+                        height: 6,
+                      ),
+                      Text(
+                        "Terlaris",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: "Monserrat",
+                            fontSize: 11,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ]),
+              ),
+              Container(
+                height: 68,
+                width: 68,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Color(0xFFD6C422),
+                          Color(0xFFEFBA00),
+                        ]),
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.black.withOpacity(0.15),
+                          offset: Offset(2, 4),
+                          blurRadius: 10),
+                    ]),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.people,
+                        color: Colors.white,
+                      ),
+                      SizedBox(
+                        height: 6,
+                      ),
+                      Text(
+                        "Transaksi",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: "Monserrat",
+                            fontSize: 11,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ]),
+              ),
+            ],
+          ),
+          SizedBox(height: kPaddingL),
+          // _category(),
+          Text('Produk',
+              textAlign: TextAlign.left,
+              style: primaryTextStyle(size: 18, weight: FontWeight.w600)),
+          SizedBox(height: kPaddingL),
+
+          Container(
+            height: 28.0,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: tabs(
+                labels: [
+                  'Semua',
+                  'Sparepart',
+                  'Kaos',
+                  'Kendaraan',
+                ],
+              ),
             ),
-            SizedBox(width: kPaddingS),
-            GestureDetector(
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (ctx) => LoginScreen(),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Container(
+            height: height * 0.4,
+            width: width,
+            child: GridView.builder(
+              padding: EdgeInsets.only(left: 15, right: 15),
+              gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: 200,
+                  childAspectRatio: 1 / 1.3,
+                  crossAxisSpacing: 15,
+                  mainAxisSpacing: 15),
+              itemCount: 20,
+              itemBuilder: (context, index) {
+                return InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (ctx) => StoreDetailScreen(),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    height: 172,
+                    width: 140,
+                    padding: EdgeInsets.all(6),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.black.withOpacity(0.15),
+                              offset: Offset(2, 4),
+                              blurRadius: 10),
+                        ]),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Image.asset('assets/images/audi.jpeg'),
+                        ),
+                        Text('Mobil Audi',
+                            textAlign: TextAlign.left,
+                            style: primaryTextStyle(
+                                size: 10, weight: FontWeight.w600)),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text('Rp. 567.000.000',
+                            textAlign: TextAlign.left,
+                            style: primaryTextStyle(
+                                size: 10, weight: FontWeight.w400)),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.calendar_today,
+                                  color: Colors.black45,
+                                  size: 10,
+                                ),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                Text('2021-09-19',
+                                    textAlign: TextAlign.left,
+                                    style: primaryTextStyle(
+                                        size: 10, weight: FontWeight.w400)),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Container(
+                                  height: 30,
+                                  width: 30,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      gradient: LinearGradient(
+                                          begin: Alignment.topCenter,
+                                          end: Alignment.bottomCenter,
+                                          colors: [
+                                            Color(0xFFFB433D),
+                                            Color(0xFFFB433D).withOpacity(0.5),
+                                          ]),
+                                      boxShadow: [
+                                        BoxShadow(
+                                            color:
+                                                Colors.black.withOpacity(0.15),
+                                            offset: Offset(2, 4),
+                                            blurRadius: 10),
+                                      ]),
+                                  child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                          Icons.favorite_outlined,
+                                          color: Colors.white,
+                                        ),
+                                      ]),
+                                ),
+                                Container(
+                                  height: 30,
+                                  width: 30,
+                                  margin: EdgeInsets.only(left: 5),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      gradient: LinearGradient(
+                                          begin: Alignment.topCenter,
+                                          end: Alignment.bottomCenter,
+                                          colors: [
+                                            Color(0xFF3491D2),
+                                            Color(0xFF3491D2).withOpacity(0.5),
+                                          ]),
+                                      boxShadow: [
+                                        BoxShadow(
+                                            color:
+                                                Colors.black.withOpacity(0.15),
+                                            offset: Offset(2, 4),
+                                            blurRadius: 10),
+                                      ]),
+                                  child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                          Icons.shopping_cart,
+                                          color: Colors.white,
+                                        ),
+                                      ]),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 );
               },
-              child: Icon(
-                Icons.favorite,
-                color: Colors.white,
-              ),
             ),
-            SizedBox(width: kPaddingS),
-            Icon(
-              Icons.shopping_bag_rounded,
-              color: Colors.white,
-            ),
-          ],
-        )
-      ],
-      body: Column(
-        children: [
-          _carousel(),
-          SizedBox(height: kPaddingL),
-          _category(),
+          ),
         ],
       ),
     );
@@ -123,7 +432,7 @@ class _StoreScreenState extends State<StoreScreen> {
 
   Widget _carousel() {
     return Container(
-      height: 200,
+      height: 153,
       child: Stack(
         alignment: Alignment.bottomCenter,
         children: [
@@ -217,4 +526,49 @@ class _StoreScreenState extends State<StoreScreen> {
 
   Widget placeholderWidget() =>
       Image.asset('assets/images/placeholder.jpg', fit: BoxFit.cover);
+  List<Widget> tabs({@required List<String> labels}) {
+    return labels
+        .asMap()
+        .map(
+          (i, e) => MapEntry(
+            i,
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  _currentTab = i;
+                });
+              },
+              child: Container(
+                margin: const EdgeInsets.only(right: 20),
+                padding: const EdgeInsets.symmetric(horizontal: kPaddingS),
+                decoration: i == _currentTab
+                    ? BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            Color(0xff334263),
+                            Color(0xff334263).withOpacity(0.8),
+                          ],
+                        ),
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(4),
+                      )
+                    : BoxDecoration(),
+                child: Center(
+                  child: Text(
+                    e,
+                    style: TextStyle(
+                      color:
+                          i == _currentTab ? Colors.white : Color(0xff9A9A9A),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        )
+        .values
+        .toList();
+  }
 }

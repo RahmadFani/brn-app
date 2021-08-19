@@ -1,12 +1,60 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:brn/config/ip.dart';
 import 'package:brn/presentation/widgets/custom_scaffold.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class NewsDetailScreen extends StatefulWidget {
+  final String articleId;
+  final String title;
+  final String content;
+  final String date;
+  final int like;
+  final int coment;
+  final int view;
+
+  const NewsDetailScreen(
+      {Key key,
+      this.title,
+      this.content,
+      this.date,
+      this.like,
+      this.coment,
+      this.view,
+      this.articleId})
+      : super(key: key);
   @override
   _NewsDetailScreenState createState() => _NewsDetailScreenState();
 }
 
 class _NewsDetailScreenState extends State<NewsDetailScreen> {
+  void getKomen() async {
+    Uri url = Uri.parse(IpClass().getip() +
+        '/api/articles/:article/comments?page%5Bnumber%5D=' +
+        widget.articleId);
+    final response = await http.get(url, headers: {
+      HttpHeaders.acceptHeader: "application/json",
+    });
+    final res = json.decode(response.body);
+  }
+
+  bool loadingKomen = true;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    getKomen();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
@@ -50,7 +98,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
           ),
           SizedBox(height: 18),
           Text(
-            'Rudi Beber Kehidupan Andin yang 2 Bulan Raup Rp 2,5 M',
+            widget.title,
             maxLines: 3,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
@@ -64,15 +112,15 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               titleItem(
-                '21-12-2021',
+                widget.date.substring(0, 10),
                 icon: Icons.calendar_today_outlined,
               ),
               titleItem(
-                '193 dilihat',
+                widget.view.toString() + ' dilihat',
                 icon: Icons.remove_red_eye_outlined,
               ),
               titleItem(
-                '127 disukasi',
+                widget.like.toString() + ' disukasi',
                 icon: Icons.favorite,
               )
             ],
@@ -89,8 +137,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(20.0),
-                  child: Text(
-                      '"Per 2012, Djeni sudah jarang pulang ke rumah. Dia mulai suka pindah-pindah kontrakan rumah," kata adik kandung Djeni, Siska, saat dijumpai Antara di rumahnya Jalan Cipinang Pulo, Jatinegara, Jakarta Timur, Kamis (17/10) sore.\n\nDjeni saat ini dikaruniai seorang anak perempuan berinisial M (12) buah pernikahannya dengan Didik, warga Surabaya pada 2002. Anak kedua dari lima bersaudara itu bercerai dengan suaminya pada 2007 dan kembali ke keluarganya di Jatinegara.'),
+                  child: Text(widget.content),
                 ),
               ),
               SizedBox(height: 18),

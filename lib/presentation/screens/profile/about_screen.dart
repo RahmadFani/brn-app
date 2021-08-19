@@ -1,8 +1,15 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:brn/config/constants.dart';
+import 'package:brn/config/ip.dart';
+import 'package:brn/model/about.dart';
+import 'package:brn/presentation/component/shimmer_dark.dart';
 import 'package:brn/presentation/widgets/custom_scaffold.dart';
 import 'package:brn/presentation/widgets/profile/setting_card.dart';
 import 'package:brn/presentation/widgets/simple_app_bar_title.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class AboutScreen extends StatefulWidget {
   @override
@@ -10,6 +17,50 @@ class AboutScreen extends StatefulWidget {
 }
 
 class _AboutScreenState extends State<AboutScreen> {
+  List<AboutModel> history = [];
+  List<AboutModel> regulation = [];
+  List<AboutModel> sapta = [];
+  List<AboutModel> adart = [];
+  List<AboutModel> structure = [];
+  void getData() async {
+    Uri url = Uri.parse(IpClass().getip() + "/api/about");
+    final response = await http.get(url, headers: {
+      HttpHeaders.acceptHeader: "application/json",
+    });
+    final res = json.decode(response.body);
+
+    if (response.statusCode == 200) {
+      if (mounted)
+        setState(() {
+          for (Map data in res['histories']) {
+            history.add(AboutModel.fromJson(data));
+          }
+          for (Map data in res['organizational_regulations']) {
+            regulation.add(AboutModel.fromJson(data));
+          }
+          for (Map data in res['tujuh_sapta_cipta']) {
+            sapta.add(AboutModel.fromJson(data));
+          }
+          for (Map data in res['adarts']) {
+            adart.add(AboutModel.fromJson(data));
+          }
+          for (Map data in res['organizational_structures']) {
+            structure.add(AboutModel.fromJson(data));
+          }
+          loading = false;
+        });
+    }
+  }
+
+  bool loading = true;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    getData();
+    super.initState();
+  }
+
   int _currentTab = 0;
   String _title = 'Tentang';
   List<Widget> _tabPages = [
@@ -276,6 +327,8 @@ class _AboutScreenState extends State<AboutScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var height = MediaQuery.of(context).size.height;
+    var width = MediaQuery.of(context).size.width;
     return CustomScaffold(
       backgroundHeigh: MediaQuery.of(context).size.height * 0.6,
       appBar: [
@@ -283,36 +336,41 @@ class _AboutScreenState extends State<AboutScreen> {
       ],
       body: Column(
         children: [
-          SettingCard(
-            child: Column(
-              children: [
-                Container(
-                  height: 28.0,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: tabs(
-                      labels: [
-                        'Tentang',
-                        'Sejarang',
-                        'AD/ART',
-                        'Pengaturan Organisasi',
-                        '7 Sapta Cipta',
-                        'Struktur Organisasi'
-                      ],
-                    ),
+          loading != true
+              ? SettingCard(
+                  child: Column(
+                    children: [
+                      Container(
+                        height: 28.0,
+                        child: ListView(
+                          scrollDirection: Axis.horizontal,
+                          children: tabs(
+                            labels: [
+                              'Tentang',
+                              'Sejarang',
+                              'AD/ART',
+                              'Pengaturan Organisasi',
+                              '7 Sapta Cipta',
+                              'Struktur Organisasi'
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: kPaddingM * 2),
+                      Expanded(child: _tabPages[_currentTab]),
+                      FittedBox(
+                        child: Text(
+                          'Copyright 2021 Buser Rentcar Nasional | Alll Rights Reserved',
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                      ),
+                    ],
                   ),
+                )
+              : ShimmerDark(
+                  height: height * 0.7,
+                  width: width,
                 ),
-                SizedBox(height: kPaddingM * 2),
-                Expanded(child: _tabPages[_currentTab]),
-                FittedBox(
-                  child: Text(
-                    'Copyright 2021 Buser Rentcar Nasional | Alll Rights Reserved',
-                    style: TextStyle(color: Colors.grey),
-                  ),
-                ),
-              ],
-            ),
-          ),
           SizedBox(height: kPaddingL),
         ],
       ),
