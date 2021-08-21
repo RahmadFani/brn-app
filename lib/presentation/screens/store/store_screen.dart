@@ -2,8 +2,10 @@ import 'package:brn/config/constants.dart';
 import 'package:brn/model/category.dart';
 import 'package:brn/model/slider_model.dart';
 import 'package:brn/presentation/screens/auth/login_screen.dart';
+import 'package:brn/presentation/screens/store/owner/store_dasboard.dart';
 import 'package:brn/presentation/screens/store/store_detail.dart';
 import 'package:brn/presentation/screens/store/store_header.dart';
+import 'package:brn/presentation/screens/store/store_transaction.dart';
 import 'package:brn/presentation/widgets/custom_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -92,44 +94,53 @@ class _StoreScreenState extends State<StoreScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
-                height: 68,
-                width: 68,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Color(0xFF22D6C4),
-                          Color(0xFF3491D2),
-                        ]),
-                    boxShadow: [
-                      BoxShadow(
-                          color: Colors.black.withOpacity(0.15),
-                          offset: Offset(2, 4),
-                          blurRadius: 10),
-                    ]),
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.people,
-                        color: Colors.white,
-                      ),
-                      SizedBox(
-                        height: 6,
-                      ),
-                      Text(
-                        "Pakaian",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: "Monserrat",
-                            fontSize: 11,
-                            fontWeight: FontWeight.w600),
-                      ),
-                    ]),
+              InkWell(
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (ctx) => StoreOwnerDashboardScreen(),
+                    ),
+                  );
+                },
+                child: Container(
+                  height: 68,
+                  width: 68,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Color(0xFF22D6C4),
+                            Color(0xFF3491D2),
+                          ]),
+                      boxShadow: [
+                        BoxShadow(
+                            color: Colors.black.withOpacity(0.15),
+                            offset: Offset(2, 4),
+                            blurRadius: 10),
+                      ]),
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.store,
+                          color: Colors.white,
+                        ),
+                        SizedBox(
+                          height: 6,
+                        ),
+                        Text(
+                          "Buka Toko",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontFamily: "Monserrat",
+                              fontSize: 11,
+                              fontWeight: FontWeight.w600),
+                        ),
+                      ]),
+                ),
               ),
               Container(
                 height: 68,
@@ -209,44 +220,53 @@ class _StoreScreenState extends State<StoreScreen> {
                       ),
                     ]),
               ),
-              Container(
-                height: 68,
-                width: 68,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Color(0xFFD6C422),
-                          Color(0xFFEFBA00),
-                        ]),
-                    boxShadow: [
-                      BoxShadow(
-                          color: Colors.black.withOpacity(0.15),
-                          offset: Offset(2, 4),
-                          blurRadius: 10),
-                    ]),
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.people,
-                        color: Colors.white,
-                      ),
-                      SizedBox(
-                        height: 6,
-                      ),
-                      Text(
-                        "Transaksi",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: "Monserrat",
-                            fontSize: 11,
-                            fontWeight: FontWeight.w600),
-                      ),
-                    ]),
+              InkWell(
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (ctx) => StoreTransactionScreen(),
+                    ),
+                  );
+                },
+                child: Container(
+                  height: 68,
+                  width: 68,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Color(0xFFD6C422),
+                            Color(0xFFEFBA00),
+                          ]),
+                      boxShadow: [
+                        BoxShadow(
+                            color: Colors.black.withOpacity(0.15),
+                            offset: Offset(2, 4),
+                            blurRadius: 10),
+                      ]),
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.people,
+                          color: Colors.white,
+                        ),
+                        SizedBox(
+                          height: 6,
+                        ),
+                        Text(
+                          "Transaksi",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontFamily: "Monserrat",
+                              fontSize: 11,
+                              fontWeight: FontWeight.w600),
+                        ),
+                      ]),
+                ),
               ),
             ],
           ),
