@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "819884910337",
+    "project_id": "brn-app-766ea",
+    "storage_bucket": "brn-app-766ea.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:819884910337:android:b2ff262c7834b8e0cf5d00",
+        "android_client_info": {
+          "package_name": "id.brn.mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "819884910337-a5haqiols59fol5vmg4n5qr2jococ702.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_JgSi5y8pciAU0n6CHDXiUBlPalxl5SI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "819884910337-a5haqiols59fol5vmg4n5qr2jococ702.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

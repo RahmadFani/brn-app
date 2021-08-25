@@ -1,5 +1,5 @@
 class IpClass {
-  String ip = 'https://api-brn.neosantara.co.id';
+  String ip = 'https://api.brnjuara.com';
   getip() {
     return this.ip;
   }

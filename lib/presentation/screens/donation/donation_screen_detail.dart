@@ -4,13 +4,39 @@ import 'package:brn/presentation/widgets/button/primary_button.dart';
 import 'package:brn/presentation/widgets/custom_modal_bottom_sheet.dart';
 import 'package:brn/presentation/widgets/custom_scaffold.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class DonationDetailScreen extends StatefulWidget {
+  final int id;
+  final String title;
+  final String description;
+  final int valueTarget;
+  final String image;
+  final String imageUrl;
+  final String donatedAt;
+  final int donationUserCount;
+  final String donationUserSumNominal;
+  final String createdAt;
+
+  const DonationDetailScreen(
+      {Key key,
+      this.id,
+      this.title,
+      this.description,
+      this.valueTarget,
+      this.image,
+      this.imageUrl,
+      this.donatedAt,
+      this.donationUserCount,
+      this.donationUserSumNominal,
+      this.createdAt})
+      : super(key: key);
   @override
   _DonationDetailScreenState createState() => _DonationDetailScreenState();
 }
 
 class _DonationDetailScreenState extends State<DonationDetailScreen> {
+  final f = new NumberFormat("#,##0", "en_US");
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
@@ -52,15 +78,21 @@ class _DonationDetailScreenState extends State<DonationDetailScreen> {
               width: double.infinity,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(28.0),
-                child: Image.asset(
-                  'assets/images/donation.png',
-                  fit: BoxFit.cover,
-                ),
+                child: widget.image != null
+                    ? Image.network(
+                        widget.image,
+                        fit: BoxFit.cover,
+                      )
+                    : Container(
+                        height: 230,
+                        width: double.infinity,
+                        color: Colors.grey.shade100,
+                      ),
               ),
             ),
             SizedBox(height: 18),
             Text(
-              'Tanah Longsor! Bantu Selamatkan Warga',
+              widget.title,
               maxLines: 3,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
@@ -84,10 +116,16 @@ class _DonationDetailScreenState extends State<DonationDetailScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 targetItem(
-                  'Rp. 250.000',
+                  'Rp. ' +
+                      f
+                          .format(int.parse(widget.donationUserSumNominal))
+                          .toString(),
                 ),
                 targetItem(
-                  'Target: Rp. 400.0000',
+                  'Target: Rp. ' +
+                      f
+                          .format(int.parse(widget.donationUserSumNominal))
+                          .toString(),
                 ),
               ],
             ),
@@ -112,8 +150,8 @@ class _DonationDetailScreenState extends State<DonationDetailScreen> {
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(50),
-                    child: Image.asset(
-                      'assets/images/person.jpeg',
+                    child: Image.network(
+                      widget.imageUrl,
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -121,19 +159,18 @@ class _DonationDetailScreenState extends State<DonationDetailScreen> {
                 SizedBox(
                   width: kPaddingS + 3,
                 ),
-                Text(
-                  'Buser Rencar Nasional',
-                  style: TextStyle(
-                    fontSize: 15,
-                  ),
-                ),
+                // Text(
+                //   'Buser Rencar Nasional',
+                //   style: TextStyle(
+                //     fontSize: 15,
+                //   ),
+                // ),
               ],
             ),
             SizedBox(
               height: kPaddingS,
             ),
-            Text(
-                'Mengutip Antara, Ahad, 24 Januari 2021, mayoritas kejadian merupakan bencana hidrometeorologi atau bencana yang terjadi sebagai dampak dari fenomena meteorologi (alam). Bencana banjir mendominasi dengan 134 kejadian, disusul tanah longsor 31 kejadian, dan puting beliung sebanyak 24 kejadian.'),
+            Text(widget.description != null ? widget.description : ""),
             Padding(
               padding: const EdgeInsets.symmetric(
                 vertical: kPaddingL * 3,
