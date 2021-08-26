@@ -1,4 +1,5 @@
 import 'package:brn/config/constants.dart';
+import 'package:brn/presentation/component/shimmer_dark.dart';
 import 'package:brn/presentation/screens/member/member_detail_screen.dart';
 import 'package:brn/presentation/widgets/button/primary_button.dart';
 import 'package:brn/presentation/widgets/custom_scaffold.dart';
@@ -11,8 +12,12 @@ class MemberScreen extends StatefulWidget {
 }
 
 class _MemberScreenState extends State<MemberScreen> {
+  bool loading = true;
   @override
   Widget build(BuildContext context) {
+    var width = MediaQuery.of(context).size.width;
+    var height = MediaQuery.of(context).size.height;
+
     return CustomScaffold(
       backgroundHeigh: MediaQuery.of(context).size.height * 0.18,
       appBar: [
@@ -76,19 +81,33 @@ class _MemberScreenState extends State<MemberScreen> {
             height: kPaddingM,
           ),
           Expanded(
-            child: ListView(
-              children: [
-                MemberItem(),
-                MemberItem(),
-                MemberItem(),
-                MemberItem(),
-                MemberItem(),
-                MemberItem(),
-                MemberItem(),
-                MemberItem(),
-                MemberItem(),
-              ],
-            ),
+            child: loading == true
+                ? ListView.builder(
+                    itemCount: 10,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        height: 200,
+                        width: width,
+                        color: Colors.white,
+                        child: ShimmerDark(
+                          height: 200,
+                          width: width,
+                        ),
+                      );
+                    })
+                : ListView(
+                    children: [
+                      MemberItem(),
+                      MemberItem(),
+                      MemberItem(),
+                      MemberItem(),
+                      MemberItem(),
+                      MemberItem(),
+                      MemberItem(),
+                      MemberItem(),
+                      MemberItem(),
+                    ],
+                  ),
           ),
         ],
       ),

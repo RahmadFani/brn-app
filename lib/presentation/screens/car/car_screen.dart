@@ -1,4 +1,5 @@
 import 'package:brn/config/constants.dart';
+import 'package:brn/presentation/component/shimmer_dark.dart';
 import 'package:brn/presentation/screens/car/add_car_screen.dart';
 import 'package:brn/presentation/screens/car/edit_car-screen.dart';
 import 'package:brn/presentation/widgets/auth/title_auth.dart';
@@ -14,8 +15,12 @@ class CarScreen extends StatefulWidget {
 }
 
 class _CarScreenState extends State<CarScreen> {
+  bool loading = true;
   @override
   Widget build(BuildContext context) {
+    var width = MediaQuery.of(context).size.width;
+    var height = MediaQuery.of(context).size.height;
+
     return CustomScaffold(
       appBar: [
         SimpleAppBarTitle(title: 'Data Kendaraan'),
@@ -56,12 +61,25 @@ class _CarScreenState extends State<CarScreen> {
           ],
         )
       ],
-      body: ListView(
-        children: [
-          CarItem(),
-          CarItem(),
-        ],
-      ),
+      body: loading == true
+          ? ListView.builder(
+              itemCount: 10,
+              itemBuilder: (context, index) {
+                return Container(
+                  height: 200,
+                  width: width,
+                  color: Colors.white,
+                  child: ShimmerDark(
+                    height: 200,
+                    width: width,
+                  ),
+                );
+              })
+          : ListView.builder(
+              itemCount: 10,
+              itemBuilder: (context, index) {
+                return CarItem();
+              }),
     );
   }
 

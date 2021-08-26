@@ -1,5 +1,6 @@
 import 'package:brn/config/constants.dart';
 import 'package:brn/config/custom_icons_icons.dart';
+import 'package:brn/presentation/component/shimmer_dark.dart';
 import 'package:brn/presentation/widgets/auth/title_auth.dart';
 import 'package:brn/presentation/widgets/button/primary_button.dart';
 import 'package:brn/presentation/widgets/custom_modal_bottom_sheet.dart';
@@ -13,8 +14,12 @@ class CaseReportScreen extends StatefulWidget {
 }
 
 class _CaseReportScreenState extends State<CaseReportScreen> {
+  bool loading = true;
   @override
   Widget build(BuildContext context) {
+    var width = MediaQuery.of(context).size.width;
+    var height = MediaQuery.of(context).size.height;
+
     return CustomScaffold(
       appBar: [
         SimpleAppBarTitle(title: 'Lapor Kasus'),
@@ -49,12 +54,26 @@ class _CaseReportScreenState extends State<CaseReportScreen> {
           ],
         )
       ],
-      body: ListView(
-        children: [
-          CarItem(),
-          CarItem(),
-        ],
-      ),
+      body: loading == true
+          ? ListView.builder(
+              itemCount: 10,
+              itemBuilder: (context, index) {
+                return Container(
+                  height: 200,
+                  width: width,
+                  color: Colors.white,
+                  child: ShimmerDark(
+                    height: 200,
+                    width: width,
+                  ),
+                );
+              })
+          : ListView(
+              children: [
+                CarItem(),
+                CarItem(),
+              ],
+            ),
     );
   }
 

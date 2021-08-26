@@ -1,5 +1,6 @@
 import 'package:brn/config/constants.dart';
 import 'package:brn/model/courses.dart';
+import 'package:brn/presentation/component/shimmer_dark.dart';
 import 'package:brn/presentation/screens/courses/courses_detail_screen.dart';
 import 'package:brn/presentation/widgets/custom_scaffold.dart';
 import 'package:brn/presentation/widgets/simple_app_bar_title.dart';
@@ -25,22 +26,39 @@ class _CoursesScreenState extends State<CoursesScreen> {
       title: 'Buser Rentcar Provinsi',
     ),
   ];
-
+  bool loading = true;
   @override
   Widget build(BuildContext context) {
+    var width = MediaQuery.of(context).size.width;
+    var height = MediaQuery.of(context).size.height;
+
     return CustomScaffold(
       appBar: [
         SimpleAppBarTitle(title: 'Pelatihan'),
       ],
-      body: ListView.builder(
-        itemCount: courses.length,
-        itemBuilder: (BuildContext ctxt, int index) {
-          return CoursesItem(
-            imageUrl: courses[index].imageUrl,
-            title: courses[index].title,
-          );
-        },
-      ),
+      body: loading == true
+          ? ListView.builder(
+              itemCount: 10,
+              itemBuilder: (context, index) {
+                return Container(
+                  height: 200,
+                  width: width,
+                  color: Colors.white,
+                  child: ShimmerDark(
+                    height: 200,
+                    width: width,
+                  ),
+                );
+              })
+          : ListView.builder(
+              itemCount: courses.length,
+              itemBuilder: (BuildContext ctxt, int index) {
+                return CoursesItem(
+                  imageUrl: courses[index].imageUrl,
+                  title: courses[index].title,
+                );
+              },
+            ),
     );
   }
 }

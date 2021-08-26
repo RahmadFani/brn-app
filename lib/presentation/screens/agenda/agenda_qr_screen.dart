@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:brn/presentation/screens/agenda/agenda_detail_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter/foundation.dart';
@@ -61,16 +62,18 @@ class _AgendaQrScreenState extends State<AgendaQrScreen> {
       setState(() {
         result = scanData;
         print(result.code);
-        next();
+        next(result.code);
       });
     });
   }
 
-  next() async {
+  next(String id) async {
     await controller.pauseCamera();
-    Navigator.of(context).push(
+    Navigator.of(context).pushReplacement(
       MaterialPageRoute(
-        builder: (ctx) => AgendaQrScreen(),
+        builder: (ctx) => AgendaDetailScreen(
+          id: id,
+        ),
       ),
     );
   }
