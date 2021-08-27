@@ -8,6 +8,7 @@ import 'package:brn/model/kategori_artikel.dart';
 import 'package:brn/presentation/component/shimmer_dark.dart';
 import 'package:brn/presentation/screens/agenda/agenda_screen.dart';
 import 'package:brn/presentation/screens/auth/register_screen.dart';
+import 'package:brn/presentation/screens/car/car_screen.dart';
 import 'package:brn/presentation/screens/case_report/care_report_screen.dart';
 import 'package:brn/presentation/screens/courses/courses_screen.dart';
 import 'package:brn/presentation/screens/donation/donation_screen.dart';
@@ -350,7 +351,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       onTap: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (ctx) => CaseReportScreen(),
+                            builder: (ctx) => CarScreen(),
                           ),
                         );
                       },
