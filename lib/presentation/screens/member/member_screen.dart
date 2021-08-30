@@ -1,10 +1,16 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:brn/config/constants.dart';
+import 'package:brn/config/ip.dart';
+import 'package:brn/model/member.dart';
 import 'package:brn/presentation/component/shimmer_dark.dart';
 import 'package:brn/presentation/screens/member/member_detail_screen.dart';
 import 'package:brn/presentation/widgets/button/primary_button.dart';
 import 'package:brn/presentation/widgets/custom_scaffold.dart';
 import 'package:brn/presentation/widgets/simple_app_bar_title.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class MemberScreen extends StatefulWidget {
   @override
@@ -13,6 +19,33 @@ class MemberScreen extends StatefulWidget {
 
 class _MemberScreenState extends State<MemberScreen> {
   bool loading = true;
+
+  List<MemberModel> member = [];
+  getData() async {
+    Uri url = Uri.parse(IpClass().getip2() + '/api/members');
+    final response = await http.get(url, headers: {
+      HttpHeaders.acceptHeader: "application/json",
+      HttpHeaders.authorizationHeader:
+          "Bearer 52|TZGwG1B0tyyApzo1Qh3S1htSEq8GsTxLIjAJ1M1X",
+    });
+    final res = json.decode(response.body);
+    if (mounted) {
+      setState(() {
+        for (Map data in res['data']) {
+          member.add(MemberModel.fromJson(data));
+        }
+        loading = false;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    getData();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
@@ -81,34 +114,114 @@ class _MemberScreenState extends State<MemberScreen> {
             height: kPaddingM,
           ),
           Expanded(
-            child: loading == true
-                ? ListView.builder(
-                    itemCount: 10,
-                    itemBuilder: (context, index) {
-                      return Container(
-                        height: 200,
-                        width: width,
-                        color: Colors.white,
-                        child: ShimmerDark(
+              child: loading == true
+                  ? ListView.builder(
+                      itemCount: 10,
+                      itemBuilder: (context, index) {
+                        return Container(
                           height: 200,
                           width: width,
-                        ),
-                      );
-                    })
-                : ListView(
-                    children: [
-                      MemberItem(),
-                      MemberItem(),
-                      MemberItem(),
-                      MemberItem(),
-                      MemberItem(),
-                      MemberItem(),
-                      MemberItem(),
-                      MemberItem(),
-                      MemberItem(),
-                    ],
-                  ),
-          ),
+                          color: Colors.white,
+                          child: ShimmerDark(
+                            height: 200,
+                            width: width,
+                          ),
+                        );
+                      })
+                  : ListView.builder(
+                      itemCount: member.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: kPaddingS),
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 55,
+                                height: 55,
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    end: Alignment.topCenter,
+                                    begin: Alignment.bottomRight,
+                                    colors: [
+                                      primaryColor,
+                                      primaryDarkColor,
+                                    ],
+                                  ),
+                                  borderRadius: BorderRadius.circular(50.0),
+                                ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(50),
+                                  child: Image.network(
+                                    member[index].profilePhotoUrl,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: kPaddingS + 3,
+                              ),
+                              Expanded(
+                                child: Column(
+                                  children: [
+                                    SizedBox(
+                                      height: kPaddingXS,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                member[index].name,
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                              Text(
+                                                member[index].email,
+                                                style: TextStyle(
+                                                  fontSize: 12,
+                                                  color: Color(0xff9A9A9A),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 32,
+                                          width: 32,
+                                          child: PrimaryButton(
+                                            onPressed: () {
+                                              Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                  builder: (ctx) =>
+                                                      MemberDetailScreen(),
+                                                ),
+                                              );
+                                            },
+                                            child: Icon(
+                                              Icons.arrow_right_alt_rounded,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Divider(
+                                      thickness: 1.2,
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      })),
         ],
       ),
     );

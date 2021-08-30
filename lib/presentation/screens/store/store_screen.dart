@@ -82,9 +82,9 @@ class _StoreScreenState extends State<StoreScreen> {
     var height = MediaQuery.of(context).size.height;
     return CustomScaffold(
       appBar: [StoreHeaderComponent()],
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
+      body: ListView(
+        // mainAxisAlignment: MainAxisAlignment.start,
+        // crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _carousel(),
           SizedBox(

@@ -3,9 +3,34 @@ import 'package:brn/presentation/widgets/custom_scaffold.dart';
 import 'package:brn/presentation/widgets/simple_app_bar_title.dart';
 import 'package:flutter/material.dart';
 
-class MemberDetailScreen extends StatelessWidget {
-  const MemberDetailScreen({Key key}) : super(key: key);
+class MemberDetailScreen extends StatefulWidget {
+  final int id;
+  final int active;
+  final int pointsRelationSumPoints;
+  final String name;
+  final String email;
+  final String profilePhotoPath;
+  final String profilePhotoUrl;
+  final String createdAt;
+  final String reasonForInactivity;
+  const MemberDetailScreen(
+      {Key key,
+      this.id,
+      this.active,
+      this.pointsRelationSumPoints,
+      this.name,
+      this.email,
+      this.profilePhotoPath,
+      this.profilePhotoUrl,
+      this.createdAt,
+      this.reasonForInactivity})
+      : super(key: key);
 
+  @override
+  _MemberDetailScreenState createState() => _MemberDetailScreenState();
+}
+
+class _MemberDetailScreenState extends State<MemberDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
@@ -69,8 +94,8 @@ class MemberDetailScreen extends StatelessWidget {
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(50),
-                    child: Image.asset(
-                      'assets/images/person.jpeg',
+                    child: Image.network(
+                      widget.profilePhotoUrl,
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -91,7 +116,7 @@ class MemberDetailScreen extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Nurdin Raudinata ',
+                                  widget.name,
                                   style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w600,
@@ -100,7 +125,7 @@ class MemberDetailScreen extends StatelessWidget {
                                   overflow: TextOverflow.ellipsis,
                                 ),
                                 Text(
-                                  'Ketua',
+                                  widget.email,
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: Color(0xff9A9A9A),
