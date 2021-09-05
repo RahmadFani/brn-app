@@ -13,6 +13,7 @@ import 'package:brn/presentation/widgets/custom_scaffold.dart';
 import 'package:brn/presentation/widgets/simple_app_bar_title.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:nb_utils/nb_utils.dart';
 
 class BlacklistScreen extends StatefulWidget {
   @override
@@ -24,11 +25,12 @@ class _BlacklistScreenState extends State<BlacklistScreen> {
 
   List<BlacklistModel> member = [];
   getData() async {
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    String token = _prefs.getString('token');
     Uri url = Uri.parse(IpClass().getip2() + '/api/perpetrators');
     final response = await http.get(url, headers: {
       HttpHeaders.acceptHeader: "application/json",
-      HttpHeaders.authorizationHeader:
-          "Bearer 52|TZGwG1B0tyyApzo1Qh3S1htSEq8GsTxLIjAJ1M1X",
+      HttpHeaders.authorizationHeader: "Bearer " + token,
     });
     final res = json.decode(response.body);
     if (mounted) {

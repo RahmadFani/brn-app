@@ -1,7 +1,12 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:brn/config/constants.dart';
+import 'package:brn/config/ip.dart';
 import 'package:brn/presentation/screens/auth/login_screen.dart';
 import 'package:brn/presentation/screens/car/car_screen.dart';
 import 'package:brn/presentation/screens/case_report/care_report_screen.dart';
+import 'package:brn/presentation/screens/dashboard_screen.dart';
 import 'package:brn/presentation/screens/profile/about_screen.dart';
 import 'package:brn/presentation/screens/profile/faq_screen.dart';
 import 'package:brn/presentation/screens/profile/privacy_policy_screen.dart';
@@ -12,6 +17,7 @@ import 'package:brn/presentation/widgets/profile/setting_card.dart';
 import 'package:brn/presentation/widgets/profile/setting_item.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:http/http.dart' as http;
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -19,23 +25,62 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  void checkLogin() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    String token = pref.getString("token");
-    if (token == null || token == "") {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (ctx) => LoginScreen(),
-        ),
-      );
+  bool loading = true;
+  String name, photo, email;
+  getProfile() async {
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    String token = _prefs.getString('token');
+    Uri url = Uri.parse(IpClass().getAuth() + '/api/profile');
+    final response = await http.get(url, headers: {
+      HttpHeaders.acceptHeader: "application/json",
+      HttpHeaders.authorizationHeader: "Bearer " + token,
+    });
+    final res = json.decode(response.body);
+    if (mounted) {
+      if (response.statusCode == 200) {
+        SharedPreferences _prefs = await SharedPreferences.getInstance();
+        _prefs.setString('name', res['data']['name']);
+        _prefs.setString('email', res['data']['email']);
+        _prefs.setString('photo', res['data']['profile_photo_url']);
+        setState(() {
+          name = res['data']['name'];
+          email = res['data']['email'];
+          photo = res['data']['profile_photo_url'];
+          loading = false;
+        });
+      } else {
+        setState(() {
+          Fluttertoast.showToast(
+              msg: res['message'],
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.CENTER,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.red,
+              textColor: Colors.white,
+              fontSize: 16.0);
+          loading = true;
+        });
+      }
     }
   }
 
   @override
   void initState() {
     // TODO: implement initState
-    checkLogin();
+    getProfile();
     super.initState();
+  }
+
+  logout() async {
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    _prefs.setString('token', "");
+    setState(() {
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+              builder: (BuildContext context) => DashBoardScreen()),
+          (route) => false);
+    });
   }
 
   @override
@@ -46,15 +91,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Arya Anggara',
-              style: TextStyle(
-                fontFamily: 'Montserrat',
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+            loading == true
+                ? Container(
+                    width: 100,
+                    height: 20,
+                    color: Colors.white.withOpacity(0.5))
+                : Text(
+                    name,
+                    style: TextStyle(
+                      fontFamily: 'Montserrat',
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
             Text(
               'Together we could be unstoppable.',
               style: TextStyle(
@@ -88,10 +138,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(50),
-              child: Image.asset(
-                'assets/images/person.jpeg',
-                fit: BoxFit.cover,
-              ),
+              child: loading == true
+                  ? Container(
+                      width: 50,
+                      height: 50,
+                      color: Colors.white.withOpacity(0.5))
+                  : Image.network(
+                      photo,
+                      fit: BoxFit.cover,
+                    ),
             ),
           ),
         )
@@ -199,7 +254,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 SettingItem(
                   text: 'Keluar',
-                  onTap: () {},
+                  onTap: () {
+                    logout();
+                  },
                 ),
               ],
             ),

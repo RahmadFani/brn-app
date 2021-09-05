@@ -8,6 +8,7 @@ import 'package:brn/model/kategori_artikel.dart';
 import 'package:brn/presentation/component/shimmer_dark.dart';
 import 'package:brn/presentation/screens/agenda/agenda_screen.dart';
 import 'package:brn/presentation/screens/auth/register_screen.dart';
+import 'package:brn/presentation/screens/blacklist/blacklist_screen.dart';
 import 'package:brn/presentation/screens/car/car_screen.dart';
 import 'package:brn/presentation/screens/case_report/care_report_screen.dart';
 import 'package:brn/presentation/screens/courses/courses_screen.dart';
@@ -20,6 +21,7 @@ import 'package:brn/presentation/screens/profile/profile_screen.dart';
 import 'package:brn/presentation/widgets/custom_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:nb_utils/nb_utils.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -32,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   bool loadingKategoriArtikel = true;
   bool loadingArtikel = true;
-  bool login = true;
+  bool login = false;
   getDataKategoriArtikel() async {
     Uri url = Uri.parse(IpClass().getip() + '/api/categories?sort=name');
     final response = await http.get(url, headers: {
@@ -60,8 +62,26 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  String name;
+  getProfile() async {
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    String token = _prefs.getString('token');
+    if (token != "") {
+      String namex = _prefs.getString('name');
+      setState(() {
+        name = namex;
+        login = true;
+      });
+    } else {
+      setState(() {
+        login = false;
+      });
+    }
+  }
+
   @override
   void initState() {
+    getProfile();
     getDataKategoriArtikel();
     super.initState();
   }
@@ -77,7 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Hi, Arya Anggara',
+              login == true ? "Hi, " + name : "Hi, Guest",
               style: TextStyle(
                 fontFamily: 'Montserrat',
                 color: Colors.white,
@@ -115,7 +135,7 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             Container(
               width: double.infinity,
-              height: login == true ? height * 0.9 : width * 0.63,
+              height: login == true ? height * 1.2 : width * 0.63,
               child: Card(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(28.0),
@@ -205,11 +225,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           Color(0xffF8CB00).withOpacity(0.6),
                         ],
                         onTap: () {
-                          // Navigator.of(context).push(
-                          //   MaterialPageRoute(
-                          //     builder: (ctx) => MemberScreen(),
-                          //   ),
-                          // );
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (ctx) => AgendaScreen(),
+                            ),
+                          );
                         }),
                     menuItem(
                         icon: CustomIcons.majesticons_user_group,
@@ -226,13 +246,19 @@ class _HomeScreenState extends State<HomeScreen> {
                           );
                         }),
                     menuItem(
-                      icon: CustomIcons.majesticons_bookmark_book,
-                      label: 'BlackList',
-                      colors: [
-                        Color(0xff14232A),
-                        Color(0xff14232A).withOpacity(0.6),
-                      ],
-                    ),
+                        icon: CustomIcons.majesticons_bookmark_book,
+                        label: 'BlackList',
+                        colors: [
+                          Color(0xff14232A),
+                          Color(0xff14232A).withOpacity(0.6),
+                        ],
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (ctx) => BlacklistScreen(),
+                            ),
+                          );
+                        }),
                     menuItem(
                       onTap: () {
                         Navigator.of(context).push(

@@ -18,20 +18,20 @@ class CoursesScreen extends StatefulWidget {
 }
 
 class _CoursesScreenState extends State<CoursesScreen> {
-  final List<Courses> courses = [
-    Courses(
-      imageUrl: 'assets/images/courses_3.png',
-      title: 'Buser Rentcar Provinsi',
-    ),
-    Courses(
-      imageUrl: 'assets/images/courses_2.png',
-      title: 'Tahapan Pelaporan Kasus Pencurian Mobil',
-    ),
-    Courses(
-      imageUrl: 'assets/images/courses_1.png',
-      title: 'Buser Rentcar Provinsi',
-    ),
-  ];
+  // final List<Courses> courses = [
+  //   Courses(
+  //     imageUrl: 'assets/images/courses_3.png',
+  //     title: 'Buser Rentcar Provinsi',
+  //   ),
+  //   Courses(
+  //     imageUrl: 'assets/images/courses_2.png',
+  //     title: 'Tahapan Pelaporan Kasus Pencurian Mobil',
+  //   ),
+  //   Courses(
+  //     imageUrl: 'assets/images/courses_1.png',
+  //     title: 'Buser Rentcar Provinsi',
+  //   ),
+  // ];
   bool loading = true;
 
   List<KursusModel> datax = [];
