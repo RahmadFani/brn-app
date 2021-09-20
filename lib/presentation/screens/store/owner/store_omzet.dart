@@ -137,7 +137,7 @@ class _StoreOwnerOmzetScreenState extends State<StoreOwnerOmzetScreen> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Icon(
-                                  Icons.price_change,
+                                  Icons.attach_money,
                                   color: Colors.black54,
                                   size: 14,
                                 ),
