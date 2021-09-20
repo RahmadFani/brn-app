@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:brn/config/constants.dart';
 import 'package:brn/config/ip.dart';
+import 'package:brn/config/storage.dart';
 import 'package:brn/model/onboard.dart';
 import 'package:brn/presentation/screens/auth/login_screen.dart';
 import 'package:brn/presentation/screens/dashboard_screen.dart';
@@ -65,8 +66,9 @@ class _SliderLayoutViewState extends State<SliderLayoutView> {
     });
   }
 
-  void _nextSlide() {
+  void _nextSlide() async {
     if ((_pageController.page + 1) == Constants.totalSlide) {
+      await DataStorage().setSplashScreenStatus();
       _changeScreen(DashBoardScreen());
     } else {
       _pageController.nextPage(
