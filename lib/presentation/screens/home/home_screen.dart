@@ -62,12 +62,13 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  String name;
+  String name = '';
   getProfile() async {
     SharedPreferences _prefs = await SharedPreferences.getInstance();
     String token = _prefs.getString('token');
     if (token != "") {
       String namex = _prefs.getString('name');
+      print('name: $namex');
       setState(() {
         name = namex;
         login = true;
@@ -97,7 +98,7 @@ class _HomeScreenState extends State<HomeScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              login == true ? "Hi, " + name : "Hi, Guest",
+              login == true ? "Hi, " : "Hi, Guest",
               style: TextStyle(
                 fontFamily: 'Montserrat',
                 color: Colors.white,

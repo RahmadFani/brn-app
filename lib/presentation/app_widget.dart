@@ -21,10 +21,23 @@ class _AppWidgetState extends State<AppWidget> {
     super.initState();
   }
 
-  stateCheck() async {
+  Future stateCheck() async {
     bool res = await DataStorage().getSplashScreenStatus();
-    if (res == null) _status = false;
-    res ? _status = true : _status = false;
+    if (res == null) {
+      setState(() {
+        _status = false;
+      });
+    } else {
+      if (res) {
+        setState(() {
+          _status = true;
+        });
+      } else {
+        setState(() {
+          _status = false;
+        });
+      }
+    }
   }
 
   @override
@@ -33,6 +46,7 @@ class _AppWidgetState extends State<AppWidget> {
       DeviceOrientation.portraitUp,
     ]);
 
+    print('Status $_status');
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Buser Car Nasional',

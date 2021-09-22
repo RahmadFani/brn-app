@@ -9,9 +9,11 @@ import 'package:brn/presentation/screens/home/home_screen.dart';
 import 'package:brn/presentation/screens/profile/profile_screen.dart';
 import 'package:brn/presentation/screens/profile/unauth_screen.dart';
 import 'package:brn/presentation/screens/store/store_screen.dart';
+import 'package:brn/providers/nfc_provider.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:provider/provider.dart';
 
 class DashBoardScreen extends StatefulWidget {
   static String tag = '/DashBoardScreen1';
@@ -54,6 +56,11 @@ class DashBoardScreenState extends State<DashBoardScreen> {
   void initState() {
     // TODO: implement initState
     checklogin();
+
+    Future.microtask(() async {
+      Provider.of<NFCProvider>(context, listen: false).initialNFC();
+    });
+
     super.initState();
   }
 
@@ -70,6 +77,18 @@ class DashBoardScreenState extends State<DashBoardScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final provNFC = Provider.of<NFCProvider>(context);
+    print('Deteksi KTP: ${provNFC.isAvailableNFC}');
+    if (provNFC.isDetectionKTP) {
+      Fluttertoast.showToast(
+          msg: "KTP Terdeteksi",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }
     return Scaffold(
       body: login == false ? tab[_currentIndex] : tab2[_currentIndex],
       bottomNavigationBar: ConvexAppBar(

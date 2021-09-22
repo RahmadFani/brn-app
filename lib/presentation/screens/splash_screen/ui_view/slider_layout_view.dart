@@ -6,7 +6,6 @@ import 'package:brn/config/constants.dart';
 import 'package:brn/config/ip.dart';
 import 'package:brn/config/storage.dart';
 import 'package:brn/model/onboard.dart';
-import 'package:brn/presentation/screens/auth/login_screen.dart';
 import 'package:brn/presentation/screens/dashboard_screen.dart';
 import 'package:brn/presentation/screens/splash_screen/constants/constants.dart';
 import 'package:brn/model/slider.dart';
