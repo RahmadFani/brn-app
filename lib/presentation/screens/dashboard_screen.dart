@@ -54,7 +54,6 @@ class DashBoardScreenState extends State<DashBoardScreen> {
   ];
   @override
   void initState() {
-    // TODO: implement initState
     checklogin();
 
     Future.microtask(() async {
@@ -78,7 +77,6 @@ class DashBoardScreenState extends State<DashBoardScreen> {
   @override
   Widget build(BuildContext context) {
     final provNFC = Provider.of<NFCProvider>(context);
-    print('Deteksi KTP: ${provNFC.isAvailableNFC}');
     if (provNFC.isDetectionKTP) {
       Fluttertoast.showToast(
           msg: "KTP Terdeteksi",
@@ -89,6 +87,7 @@ class DashBoardScreenState extends State<DashBoardScreen> {
           textColor: Colors.white,
           fontSize: 16.0);
     }
+
     return Scaffold(
       body: login == false ? tab[_currentIndex] : tab2[_currentIndex],
       bottomNavigationBar: ConvexAppBar(

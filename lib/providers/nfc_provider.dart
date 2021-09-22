@@ -1,9 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:nb_utils/nb_utils.dart';
 import 'package:nfc_manager/nfc_manager.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 enum StateNFC { Initial, Loading, Loaded, Null, Error }
 
@@ -14,14 +12,14 @@ class NFCProvider extends ChangeNotifier {
     await checkNFC();
   }
 
-  bool _availableNFC;
+  bool _availableNFC = false;
   bool get isAvailableNFC => _availableNFC;
   set setAvailableNFC(val) {
     _availableNFC = val;
     notifyListeners();
   }
 
-  bool _detectionKTP;
+  bool _detectionKTP = false;
   bool get isDetectionKTP => _detectionKTP;
   set setDetectionKTP(val) {
     _detectionKTP = val;
@@ -48,5 +46,7 @@ class NFCProvider extends ChangeNotifier {
         print('data $tmp');
       });
     }
+    // Stop Session
+    NfcManager.instance.stopSession();
   }
 }
