@@ -15,9 +15,10 @@ import 'package:brn/presentation/screens/courses/courses_screen.dart';
 import 'package:brn/presentation/screens/donation/donation_screen.dart';
 import 'package:brn/presentation/screens/member/member_screen.dart';
 import 'package:brn/presentation/screens/news/news_detail_screen.dart';
+import 'package:brn/presentation/screens/nfc/nfc_screen.dart';
 import 'package:brn/presentation/screens/notification/notification_screen.dart';
+import 'package:brn/presentation/screens/peta_induk/peta_induk_screen.dart';
 import 'package:brn/presentation/screens/profile/about_screen.dart';
-import 'package:brn/presentation/screens/profile/profile_screen.dart';
 import 'package:brn/presentation/widgets/custom_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -387,6 +388,36 @@ class _HomeScreenState extends State<HomeScreen> {
                       colors: [
                         Color(0xffF84C26),
                         Color(0xffC24A16).withOpacity(0.6),
+                      ],
+                    ),
+                    menuItem(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (ctx) => NfcScreen(),
+                          ),
+                        );
+                      },
+                      icon: Icons.chrome_reader_mode,
+                      label: 'Cek KTP (NFC)',
+                      colors: [
+                        Color(0xff05e39d).withOpacity(0.6),
+                        Color(0xff08c98c),
+                      ],
+                    ),
+                    menuItem(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (ctx) => PetaIndukScreen(),
+                          ),
+                        );
+                      },
+                      icon: Icons.map_outlined,
+                      label: 'Peta Induk',
+                      colors: [
+                        Color(0xff034496),
+                        Color(0xff043b80).withOpacity(0.6),
                       ],
                     ),
                   ],
