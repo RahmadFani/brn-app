@@ -19,6 +19,8 @@ PODS:
   - MTBBarcodeScanner (5.0.11)
   - nb_utils (0.0.1):
     - Flutter
+  - nfc_manager (0.0.1):
+    - Flutter
   - OrderedSet (5.0.0)
   - path_provider (0.0.1):
     - Flutter
@@ -39,6 +41,7 @@ DEPENDENCIES:
   - flutter_inappwebview (from `.symlinks/plugins/flutter_inappwebview/ios`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - nb_utils (from `.symlinks/plugins/nb_utils/ios`)
+  - nfc_manager (from `.symlinks/plugins/nfc_manager/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - qr_code_scanner (from `.symlinks/plugins/qr_code_scanner/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
@@ -63,6 +66,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/fluttertoast/ios"
   nb_utils:
     :path: ".symlinks/plugins/nb_utils/ios"
+  nfc_manager:
+    :path: ".symlinks/plugins/nfc_manager/ios"
   path_provider:
     :path: ".symlinks/plugins/path_provider/ios"
   qr_code_scanner:
@@ -80,6 +85,7 @@ SPEC CHECKSUMS:
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   MTBBarcodeScanner: f453b33c4b7dfe545d8c6484ed744d55671788cb
   nb_utils: ada4338858d8827ec92fdab2a545206b4ba4cfb1
+  nfc_manager: 69e4cd9c15112206ab30246b1ce8d81a75729fdf
   OrderedSet: aaeb196f7fef5a9edf55d89760da9176ad40b93c
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
   qr_code_scanner: bb67d64904c3b9658ada8c402e8b4d406d5d796e
@@ -90,4 +96,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.11.2

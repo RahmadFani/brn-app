@@ -30,6 +30,12 @@ dependencies:
   provider: ^6.0.0
   nfc_manager: ^3.1.0
   fluttertoast: ^8.0.8
+  flutter_dropdown_alert: ^1.0.3
+
+  # map
+  flutter_map: any
+  flutter_map_marker_cluster: any
+
 
 
 
