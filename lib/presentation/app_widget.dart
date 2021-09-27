@@ -1,6 +1,7 @@
 import 'package:brn/config/storage.dart';
 import 'package:brn/presentation/screens/dashboard_screen.dart';
 import 'package:brn/presentation/screens/splash_screen/splash_screen.dart';
+import 'package:flutter_dropdown_alert/dropdown_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -55,6 +56,7 @@ class _AppWidgetState extends State<AppWidget> {
         fontFamily: 'Poppins',
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
+      builder: (context, child) => Stack(children: [child, DropdownAlert()]),
       home: _status ? DashBoardScreen() : SplashScreen(),
     );
   }
