@@ -7,9 +7,9 @@ class LoginAuth {
 
   static LoginAuth fromJson(Map<String, dynamic> json) {
     return LoginAuth(
-      nama: json['nama'],
-      email: json['email'],
-      token: json['token'],
+      nama: json.containsKey('nama') ? json['nama'] : '',
+      email: json.containsKey('email') ? json['email'] : '',
+      token: json.containsKey('token') ? json['token'] : '',
     );
   }
 
