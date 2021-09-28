@@ -27,12 +27,14 @@ class DataStorage {
 
   //UserData
   getToken() async {
+    prefs = await SharedPreferences.getInstance();
     String res = prefs.getString('token');
     return res;
   }
 
   getName() async {
-    String res = await prefs.getString('name');
+    prefs = await SharedPreferences.getInstance();
+    String res = prefs.getString('name');
     return res;
   }
 }

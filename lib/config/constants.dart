@@ -10,3 +10,9 @@ const double kPaddingXS = 4.0;
 const double kPaddingS = 8.0;
 const double kPaddingM = 16.0;
 const double kPaddingL = 18.0;
+
+const String sInitial = 'INITIAL';
+const String sLoading = 'LOADING';
+const String sLoaded = 'LOADED';
+const String sNull = 'NULL';
+const String sError = 'ERROR';
