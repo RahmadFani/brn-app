@@ -48,6 +48,21 @@ class PetaIndukProvider extends ChangeNotifier {
   List<Marker> _markers = [];
   List<Marker> get markers => _markers;
 
+  Future<void> addNewLatLngList() {
+    ///add latlong to _latlngList
+    latLngList.clear();
+
+    dataProfile.data.addresses.forEach((val) {
+      latLngList.add(LatLng(val.latitude, val.longitude));
+    });
+
+    latLngList.forEach((v) {
+      print(v.latitude);
+      print(v.longitude);
+    });
+    notifyListeners();
+  }
+
   addMarkers(List<LatLng> val) {
     _markers = val
         .map((point) => Marker(
@@ -84,22 +99,11 @@ class PetaIndukProvider extends ChangeNotifier {
         var item = json.decode(response.body);
         setProfileModel(ProfileModel.fromJson(item));
         if (dataProfile.data.addresses.length != 0) {
-          ///add latlong to _latlngList
-          latLngList.clear();
-
-          dataProfile.data.addresses.forEach((val) {
-            latLngList.add(LatLng(val.latitude, val.longitude));
-          });
-
-          latLngList.forEach((v) {
-            print(v.latitude);
-            print(v.longitude);
-          });
+          await addNewLatLngList();
 
           ///add marker
           addMarkers(latLngList);
           setStatePetaInduk(sLoaded);
-          notifyListeners();
         } else {
           showWarning(msg: 'Location not found');
           setStatePetaInduk(sNull);

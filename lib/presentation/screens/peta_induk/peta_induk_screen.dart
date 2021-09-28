@@ -4,7 +4,6 @@ import 'package:brn/presentation/screens/peta_induk/widgets/filter_peta_induk.da
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
 
 class PetaIndukScreen extends StatefulWidget {
@@ -17,7 +16,7 @@ class PetaIndukScreen extends StatefulWidget {
 class _PetaIndukScreenState extends State<PetaIndukScreen> {
   final PopupController _popupController = PopupController();
   MapController _mapController = MapController();
-  double _zoom = 8;
+  double _zoom = 1;
 
   @override
   void initState() {
