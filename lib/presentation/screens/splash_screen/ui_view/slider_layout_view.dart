@@ -6,9 +6,9 @@ import 'package:brn/config/constants.dart';
 import 'package:brn/config/ip.dart';
 import 'package:brn/config/storage.dart';
 import 'package:brn/model/onboard.dart';
+import 'package:brn/model/slider.dart';
 import 'package:brn/presentation/screens/dashboard_screen.dart';
 import 'package:brn/presentation/screens/splash_screen/constants/constants.dart';
-import 'package:brn/model/slider.dart';
 import 'package:brn/presentation/widgets/slide_items/slide_dots.dart';
 import 'package:brn/presentation/widgets/slide_items/slide_item.dart';
 import 'package:flutter/material.dart';
@@ -67,7 +67,7 @@ class _SliderLayoutViewState extends State<SliderLayoutView> {
 
   void _nextSlide() async {
     if ((_pageController.page + 1) == Constants.totalSlide) {
-      await DataStorage().setSplashScreenStatus();
+      await DataStorage.instance.setSplashScreenStatus();
       _changeScreen(DashBoardScreen());
     } else {
       _pageController.nextPage(
