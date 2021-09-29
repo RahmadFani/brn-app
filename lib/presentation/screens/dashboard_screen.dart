@@ -21,7 +21,7 @@ class DashBoardScreenState extends State<DashBoardScreen> {
   int _currentIndex = 0;
   bool login = false;
   checklogin() async {
-    String token = DataStorage.instance.getToken();
+    String token = await DataStorage.instance.getToken();
 
     if (token != "") {
       setState(() {

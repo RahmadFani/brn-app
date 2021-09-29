@@ -35,12 +35,12 @@ class DataStorage {
   }
 
   //UserData
-  getToken() async {
+  Future<String> getToken() async {
     await init();
     return prefs.getString('token') ?? '';
   }
 
-  getName() async {
+  Future<String> getName() async {
     await init();
     return prefs.getString('name') ?? '';
   }
