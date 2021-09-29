@@ -1,99 +1,38 @@
-import 'dart:convert';
-import 'dart:io';
-
-import 'package:brn/config/ip.dart';
 import 'package:brn/model/data_state.dart';
-import 'package:brn/model/login_auth.dart';
-import 'package:brn/presentation/screens/auth/login_screen.dart';
-import 'package:brn/presentation/screens/auth/register_profile_screen.dart';
+import 'package:brn/presentation/screens/auth/register_profile_provider.dart';
 import 'package:brn/presentation/widgets/auth/custom_scaffold_auth.dart';
 import 'package:brn/presentation/widgets/auth/footer_auth.dart';
 import 'package:brn/presentation/widgets/auth/title_auth.dart';
 import 'package:brn/presentation/widgets/button/primary_button.dart';
-import 'package:brn/providers/auth_provider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:modal_progress_hud/modal_progress_hud.dart';
-import 'package:nb_utils/nb_utils.dart';
+import 'package:provider/provider.dart';
 
-class RegisterScreen extends StatefulWidget {
+class RegisterProfileScreen extends StatelessWidget {
   @override
-  _RegisterScreenState createState() => _RegisterScreenState();
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (context) => RegisterProfileProvider(),
+      child: RegisterProfileContent(),
+    );
+  }
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
-  TextEditingController _name = TextEditingController();
-  TextEditingController _email = TextEditingController();
-  TextEditingController _pass = TextEditingController();
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  DataState _dataState = DataStateIdle();
-
-  register() async {
-    if (!_formKey.currentState.validate()) {
-      return;
-    }
-
-    setState(() {
-      _dataState = DataStateLoading();
-    });
-    Uri url = Uri.parse(IpClass().getAuth() + '/api/register');
-    final response = await http.post(url, headers: {
-      HttpHeaders.acceptHeader: "application/json",
-    }, body: {
-      "name": _name.text,
-      "email": _email.text,
-      "password": _pass.text,
-    });
-    final res = json.decode(response.body);
-    print(response.body);
-    if (mounted) {
-      if (response.statusCode == 201) {
-        Map<String, dynamic> map = jsonDecode(response.body);
-        LoginAuth auth = LoginAuth(
-            nama: _name.text.trim(),
-            email: _email.text.trim(),
-            token: map['access_token'],
-            tokenType: res['token_type']);
-        //
-        await AuthProvider.instance.saveLoginAuth(auth);
-        setState(() {
-          _dataState = DataStateSuccess();
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: (ctx) => RegisterProfileScreen(),
-            ),
-          );
-        });
-      } else {
-        setState(() {
-          Fluttertoast.showToast(
-              msg: res['message'],
-              toastLength: Toast.LENGTH_LONG,
-              gravity: ToastGravity.CENTER,
-              timeInSecForIosWeb: 1,
-              backgroundColor: Colors.red,
-              textColor: Colors.white,
-              fontSize: 16.0);
-          _dataState = DataStateError(errorMessage: res['message']);
-        });
-      }
-    }
-
-    // Fluttertoast.showToast(
-    //     msg: "Silahkan Masukan Email dan Password dengan lengkap",
-    //     toastLength: Toast.LENGTH_LONG,
-    //     gravity: ToastGravity.CENTER,
-    //     timeInSecForIosWeb: 1,
-    //     backgroundColor: Colors.red,
-    //     textColor: Colors.white,
-    //     fontSize: 16.0);
-  }
+class RegisterProfileContent extends StatelessWidget {
+  final _formKey = GlobalKey<FormState>();
+  final _hpController = TextEditingController();
+  final _namaRentalConttroller = TextEditingController();
+  final _ukuranBajuController = TextEditingController();
+  final _noKtpController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    RegisterProfileProvider provider = context.watch<RegisterProfileProvider>();
+    final email = provider.loginAuth.email;
+    final nama = provider.loginAuth.nama;
+
     return ModalProgressHUD(
-      inAsyncCall: _dataState is DataStateLoading,
+      inAsyncCall: provider.dataState is DataStateLoading,
       child: CustomScaffoldAuth(
         body: Form(
           key: _formKey,
@@ -101,11 +40,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
             children: [
               TitleAuth('Registrasi'),
               TextFormField(
-                keyboardType: TextInputType.name,
-                controller: _name,
+                keyboardType: TextInputType.phone,
+                controller: _hpController,
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.all(14),
-                  labelText: "Nama",
+                  labelText: "Nomor handphone",
                   fillColor: Colors.white,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30.0),
@@ -120,10 +59,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   //fillColor: Colors.green
                 ),
                 validator: (val) {
-                  if (val.length == 0) {
-                    return "Nama tidak boleh kosong";
-                  } else if (val.trim().length < 3) {
-                    return "Sepertinya nama tidak valid";
+                  if (val.length < 10 || val.length > 15) {
+                    return "Nomor hp tidak valid";
                   } else {
                     return null;
                   }
@@ -135,7 +72,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               SizedBox(height: 20),
               TextFormField(
                 keyboardType: TextInputType.emailAddress,
-                controller: _email,
+                initialValue: email,
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.all(14),
                   labelText: "Email",
@@ -169,7 +106,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               TextFormField(
                 keyboardType: TextInputType.text,
                 obscureText: true,
-                controller: _pass,
+                initialValue: "........",
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.all(14),
                   labelText: "Password",
@@ -207,7 +144,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   //     builder: (ctx) => VerifOtpScreen(),
                   //   ),
                   // );
-                  register();
+                  // register();
                 },
                 text: 'Lanjutkan',
               ),
@@ -215,11 +152,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 text: 'Sudah punya Akun',
                 buttonText: 'Masuk',
                 onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (ctx) => LoginScreen(),
-                    ),
-                  );
+                  // Navigator.of(context).push(
+                  //   MaterialPageRoute(
+                  //     builder: (ctx) => LoginScreen(),
+                  //   ),
+                  // );
                 },
               ),
             ],
