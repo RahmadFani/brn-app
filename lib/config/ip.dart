@@ -1,6 +1,6 @@
 class IpClass {
   String ip = 'https://api.brnjuara.com';
-  String ip2 = 'https://api-brn.neosantara.co.id';
+  String ip2 = 'https://api.brnjuara.com';
   String ipAuth = 'https://auth.brnjuara.com';
   getip() {
     return this.ip;
