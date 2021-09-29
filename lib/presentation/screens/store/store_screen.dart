@@ -372,8 +372,6 @@ class _StoreScreenState extends State<StoreScreen> {
                             Row(
                               children: [
                                 Container(
-                                  height: 30,
-                                  width: 30,
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(5),
                                       gradient: LinearGradient(
@@ -396,15 +394,15 @@ class _StoreScreenState extends State<StoreScreen> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
                                       children: [
-                                        Icon(
-                                          Icons.favorite_outlined,
-                                          color: Colors.white,
+                                        FittedBox(
+                                          child: Icon(
+                                            Icons.favorite_outlined,
+                                            color: Colors.white,
+                                          ),
                                         ),
                                       ]),
                                 ),
                                 Container(
-                                  height: 30,
-                                  width: 30,
                                   margin: EdgeInsets.only(left: 5),
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(5),
@@ -428,9 +426,11 @@ class _StoreScreenState extends State<StoreScreen> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
                                       children: [
-                                        Icon(
-                                          Icons.shopping_cart,
-                                          color: Colors.white,
+                                        FittedBox(
+                                          child: Icon(
+                                            Icons.shopping_cart,
+                                            color: Colors.white,
+                                          ),
                                         ),
                                       ]),
                                 ),
