@@ -90,25 +90,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
       Map<String, dynamic> res = json.decode(response.body);
       if (response.statusCode != 201) {
         setState(() {
-          Fluttertoast.showToast(
-              msg: res['message'],
-              toastLength: Toast.LENGTH_LONG,
-              gravity: ToastGravity.CENTER,
-              timeInSecForIosWeb: 1,
-              backgroundColor: Colors.red,
-              textColor: Colors.white,
-              fontSize: 16.0);
           _dataState = DataStateError(errorMessage: res['message']);
           if (res.containsKey("errors")) {
             Map<String, dynamic> errorMap = res['errors'];
             StringBuffer message = StringBuffer();
             errorMap.keys.forEach((element) {
-              message.writeln([
-                "$element: ${(errorMap[element] as Iterable<String>).join(", ")}"
-              ]);
+              message.writeln(errorMap[element].join(", "));
             });
             errorTitle = res['message'];
             errorMessage = message.toString();
+          }
+          if (errorMessage.isEmpty) {
+            Fluttertoast.showToast(
+                msg: res['message'],
+                toastLength: Toast.LENGTH_LONG,
+                gravity: ToastGravity.CENTER,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Colors.red,
+                textColor: Colors.white,
+                fontSize: 16.0);
           }
         });
 
@@ -185,60 +185,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
     } finally {
       client.close();
     }
-// Uri url = Uri.parse(IpClass().getAuth() + '/api/register');
-// final response = await http.post(url, headers: {
-//   HttpHeaders.acceptHeader: "application/json",
-// }, body: {
-//   "name": _name.text,
-//   "email": _email.text,
-//   "password": _pass.text,
-// });
-// final res = json.decode(response.body);
-// print(response.body);
-// if (mounted) {
-//   if (response.statusCode == 201) {
-//     Map<String, dynamic> map = jsonDecode(response.body);
-//     LoginAuth auth = LoginAuth(
-//         nama: _name.text.trim(),
-//         email: _email.text.trim(),
-//         token: map['access_token'],
-//         tokenType: res['token_type']);
-//     //
-//     // await AuthProvider.instance.saveLoginAuth(auth);
-//     setState(() {
-//       _dataState = DataStateSuccess();
-//       Navigator.of(context).pushReplacement(
-//         MaterialPageRoute(
-//           builder: (ctx) => RegisterProfileScreen(),
-//         ),
-//       );
-//     });
-//   } else {
-//     setState(() {
-//       Fluttertoast.showToast(
-//           msg: res['message'],
-//           toastLength: Toast.LENGTH_LONG,
-//           gravity: ToastGravity.CENTER,
-//           timeInSecForIosWeb: 1,
-//           backgroundColor: Colors.red,
-//           textColor: Colors.white,
-//           fontSize: 16.0);
-//       _dataState = DataStateError(errorMessage: res['message']);
-//     });
-//   }
-// }
-
-// Fluttertoast.showToast(
-//     msg: "Silahkan Masukan Email dan Password dengan lengkap",
-//     toastLength: Toast.LENGTH_LONG,
-//     gravity: ToastGravity.CENTER,
-//     timeInSecForIosWeb: 1,
-//     backgroundColor: Colors.red,
-//     textColor: Colors.white,
-//     fontSize: 16.0);
   }
 
   void authenticatePhoneNumber() {
+    setState(() {
+      _dataState = DataStateLoading();
+    });
     phoneAuthToken = "";
     phoneAuthMessage = "";
     FirebaseAuth.instance.verifyPhoneNumber(
@@ -254,16 +206,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
         print("""verificationFailed. error:${error?.stackTrace?.toString()}""");
         if (mounted) {
           Fluttertoast.showToast(msg: "${error?.message}");
+          setState(() {
+            _dataState = DataStateError(errorMessage: "${error?.message}");
+          });
         }
       },
       codeSent: (verificationId, forceResendingToken) {
         print("codeSent");
         if (mounted) {
           Fluttertoast.showToast(msg: "Kode SMS terkirim");
+          setState(() {
+            _dataState = DataStateSuccess();
+          });
         }
       },
       codeAutoRetrievalTimeout: (verificationId) {
         print("codeAutoRetrievalTimeout");
+        setState(() {
+          _dataState = DataStateIdle();
+        });
       },
     );
   }
@@ -271,13 +232,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     if (errorTitle.isNotEmpty && errorMessage.isNotEmpty) {
+      final t = errorTitle;
+      final m = errorMessage;
+      errorTitle = "";
+      errorMessage = "";
       Future.microtask(() {
         showDialog(
           context: context,
           builder: (context) {
             return AlertDialog(
-              title: Text(errorTitle),
-              content: Text(errorMessage),
+              title: Text(t),
+              content: Text(m),
               actions: [
                 TextButton(
                   child: Text("OK"),
@@ -316,11 +281,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 SizedBox(height: 20),
                 PrimaryButton(
                   onPressed: () {
-                    // Navigator.of(context).push(
-                    //   MaterialPageRoute(
-                    //     builder: (ctx) => VerifOtpScreen(),
-                    //   ),
-                    // );
                     context.requestFocus(FocusNode());
                     register();
                   },
@@ -330,7 +290,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   text: 'Sudah punya Akun',
                   buttonText: 'Masuk',
                   onPressed: () {
-                    Navigator.of(context).push(
+                    Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
                         builder: (ctx) => LoginScreen(),
                       ),
