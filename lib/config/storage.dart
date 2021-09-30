@@ -1,7 +1,11 @@
+import 'dart:convert';
+
+import 'package:brn/model/login_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DataStorage {
   SharedPreferences prefs;
+
   DataStorage._();
 
   static DataStorage _instance;
@@ -15,7 +19,7 @@ class DataStorage {
   setSplashScreenStatus() async {
     print('simpan');
     await init();
-    prefs.setBool('splash', true);
+    await prefs.setBool('splash', true);
   }
 
   getSplashScreenStatus() async {
@@ -31,13 +35,23 @@ class DataStorage {
 
   removeSplashScreenStatus() async {
     await init();
-    prefs.remove('splash');
+    await prefs.remove('splash');
   }
 
   //UserData
   Future<String> getToken() async {
     await init();
     return prefs.getString('token') ?? '';
+  }
+
+  Future<void> saveToken(String token) async {
+    await init();
+    await prefs.setString("token", token);
+  }
+
+  Future<void> deleteToken() async {
+    await init();
+    await prefs.remove('token');
   }
 
   Future<String> getName() async {
@@ -47,11 +61,26 @@ class DataStorage {
 
   Future<void> saveString(String key, String value) async {
     await init();
-    prefs.setString(key, value);
+    await prefs.setString(key, value);
   }
 
   Future<String> getString(String key) async {
     await init();
     return prefs.getString(key);
+  }
+
+  Future<void> saveAuth(LoginAuth auth) async {
+    await init();
+    await prefs.setString('auth', auth.toString());
+  }
+
+  Future<LoginAuth> getAuth(String key) async {
+    await init();
+    LoginAuth result;
+    String s = prefs.getString('auth') ?? '';
+    if (s.startsWith("{")) {
+      result = LoginAuth.fromJson(jsonDecode(s));
+    }
+    return result;
   }
 }
