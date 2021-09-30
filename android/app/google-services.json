@@ -1,33 +1,41 @@
 {
   "project_info": {
-    "project_number": "819884910337",
-    "project_id": "brn-app-766ea",
-    "storage_bucket": "brn-app-766ea.appspot.com"
+    "project_number": "1069180390613",
+    "project_id": "brn-chat",
+    "storage_bucket": "brn-chat.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:819884910337:android:b2ff262c7834b8e0cf5d00",
+        "mobilesdk_app_id": "1:1069180390613:android:98aa2a73fadf3531b9a65c",
         "android_client_info": {
           "package_name": "id.brn.mobile"
         }
       },
       "oauth_client": [
         {
-          "client_id": "819884910337-a5haqiols59fol5vmg4n5qr2jococ702.apps.googleusercontent.com",
+          "client_id": "1069180390613-vk5fdu9qi4lsg4eqpshme1jdv6qb99ag.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "id.brn.mobile",
+            "certificate_hash": "b9ccbf2ea5d4ce7061409891de8f1b5ce09a7fde"
+          }
+        },
+        {
+          "client_id": "1069180390613-e48rl2511325ntp7t9kv12rbn7o49ofd.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyC_JgSi5y8pciAU0n6CHDXiUBlPalxl5SI"
+          "current_key": "AIzaSyA-1QJdtqqb7TL7WiUVBQ6e4WJETz9vktc"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "819884910337-a5haqiols59fol5vmg4n5qr2jococ702.apps.googleusercontent.com",
+              "client_id": "1069180390613-e48rl2511325ntp7t9kv12rbn7o49ofd.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

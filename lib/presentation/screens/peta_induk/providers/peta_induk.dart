@@ -7,11 +7,11 @@ import 'package:brn/config/message.dart';
 import 'package:brn/config/storage.dart';
 import 'package:brn/model/profile.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' show Client, Response;
-
 // Maps and Markers
-import 'package:latlong2/latlong.dart';
+// import 'package:latlong2/latlong.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:http/http.dart' show Client, Response;
+import 'package:latlong/latlong.dart';
 
 class PetaIndukProvider extends ChangeNotifier {
   Client client = Client();
@@ -86,7 +86,7 @@ class PetaIndukProvider extends ChangeNotifier {
 
   httpGetProfile() async {
     try {
-      var token = await DataStorage().getToken();
+      var token = await DataStorage.instance.getToken();
       var url = Uri.parse(IpClass().getAuth() +
           '/api/profile?include=addresses%2Cpersonal-information');
       final header = {

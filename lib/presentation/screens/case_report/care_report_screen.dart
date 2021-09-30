@@ -23,35 +23,39 @@ class _CaseReportScreenState extends State<CaseReportScreen> {
     return CustomScaffold(
       appBar: [
         SimpleAppBarTitle(title: 'Lapor Kasus'),
-        Row(
-          children: [
-            Icon(
-              Icons.search,
-              color: Colors.white,
-            ),
-            SizedBox(width: kPaddingS),
-            GestureDetector(
-              onTap: () {
-                showCustomModalBottomSheet(
-                  context,
-                  expanded: false,
-                  body: filter(),
-                );
-              },
-              child: Icon(
-                Icons.subject,
+        Expanded(
+          child: Row(
+            children: [
+              Icon(
+                Icons.search,
                 color: Colors.white,
               ),
-            ),
-            SizedBox(width: kPaddingS),
-            GestureDetector(
-              onTap: () {},
-              child: Icon(
-                Icons.add,
-                color: Colors.white,
+              SizedBox(width: kPaddingS),
+              GestureDetector(
+                onTap: () {
+                  showCustomModalBottomSheet(
+                    context,
+                    expanded: false,
+                    body: filter(),
+                  );
+                },
+                child: Icon(
+                  Icons.subject,
+                  color: Colors.white,
+                ),
               ),
-            ),
-          ],
+              SizedBox(width: kPaddingS),
+              Expanded(
+                child: GestureDetector(
+                  onTap: () {},
+                  child: Icon(
+                    Icons.add,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ],
+          ),
         )
       ],
       body: loading == true

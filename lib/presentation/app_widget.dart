@@ -1,9 +1,9 @@
 import 'package:brn/config/storage.dart';
 import 'package:brn/presentation/screens/dashboard_screen.dart';
 import 'package:brn/presentation/screens/splash_screen/splash_screen.dart';
-import 'package:flutter_dropdown_alert/dropdown_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dropdown_alert/dropdown_alert.dart';
 
 class AppWidget extends StatefulWidget {
   AppWidget({Key key}) : super(key: key);
@@ -23,7 +23,7 @@ class _AppWidgetState extends State<AppWidget> {
   }
 
   Future stateCheck() async {
-    bool res = await DataStorage().getSplashScreenStatus();
+    bool res = await DataStorage.instance.getSplashScreenStatus();
     if (res == null) {
       setState(() {
         _status = false;

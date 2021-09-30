@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:brn/config/custom_icons_icons.dart';
+import 'package:brn/config/storage.dart';
 import 'package:brn/presentation/screens/chat/chat_screen.dart';
 import 'package:brn/presentation/screens/home/home_screen.dart';
 import 'package:brn/presentation/screens/profile/profile_screen.dart';
@@ -8,8 +9,6 @@ import 'package:brn/presentation/screens/profile/unauth_screen.dart';
 import 'package:brn/presentation/screens/store/store_screen.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:nb_utils/nb_utils.dart';
-import 'package:provider/provider.dart';
 
 class DashBoardScreen extends StatefulWidget {
   static String tag = '/DashBoardScreen1';
@@ -22,8 +21,8 @@ class DashBoardScreenState extends State<DashBoardScreen> {
   int _currentIndex = 0;
   bool login = false;
   checklogin() async {
-    SharedPreferences x = await SharedPreferences.getInstance();
-    String token = x.getString('token');
+    String token = await DataStorage.instance.getToken();
+
     if (token != "") {
       setState(() {
         login = true;

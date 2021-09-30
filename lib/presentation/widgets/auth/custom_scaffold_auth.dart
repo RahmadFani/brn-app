@@ -73,26 +73,28 @@ class CustomScaffoldAuth extends StatelessWidget {
               vertical: 10,
             ),
             width: double.infinity,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                SizedBox(height: 10),
-                Center(
-                  child: Container(
-                    width: 50,
-                    height: 3,
-                    decoration: BoxDecoration(
-                      color: Color(0xffC4C4C4),
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  SizedBox(height: 10),
+                  Center(
+                    child: Container(
+                      width: 50,
+                      height: 3,
+                      decoration: BoxDecoration(
+                        color: Color(0xffC4C4C4),
+                        borderRadius: BorderRadius.all(Radius.circular(5)),
+                      ),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: kPaddingL),
-                  child: body,
-                ),
-              ],
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: kPaddingL),
+                    child: body,
+                  ),
+                ],
+              ),
             ),
           )
         ],

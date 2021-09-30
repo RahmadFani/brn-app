@@ -4,8 +4,9 @@ import 'package:brn/model/send_menu_items.dart';
 import 'package:brn/presentation/screens/chat/chat_detail_screen.dart';
 import 'package:brn/presentation/widgets/chat/chat_bubble.dart';
 import 'package:brn/presentation/widgets/chat/chat_detail_page_appbar.dart';
+import 'package:brn/presentation/widgets/chat/date_chip.dart';
 import 'package:brn/presentation/widgets/custom_modal_bottom_sheet.dart';
-import 'package:chat_bubbles/date_chips/date_chip.dart';
+// import 'package:chat_bubbles/date_chips/date_chip.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
