@@ -6,6 +6,8 @@ import 'package:brn/config/storage.dart';
 import 'package:brn/model/data_state.dart';
 import 'package:brn/model/login_auth.dart';
 import 'package:brn/presentation/screens/auth/login_screen.dart';
+import 'package:brn/presentation/screens/auth/phone_otp_dialog.dart';
+import 'package:brn/presentation/screens/auth/pick_location_screen.dart';
 import 'package:brn/presentation/screens/dashboard_screen.dart';
 import 'package:brn/presentation/widgets/auth/custom_scaffold_auth.dart';
 import 'package:brn/presentation/widgets/auth/footer_auth.dart';
@@ -16,6 +18,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:http/http.dart' as http;
+import 'package:latlong/latlong.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:nb_utils/nb_utils.dart';
 
@@ -35,10 +38,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
   DataState _dataState = DataStateIdle();
   final _ukuranBaju = ['S', 'M', 'L', 'XL', 'XXL', 'XXXL'];
   String _selectedUkuranBaju = 'S';
-  String phoneAuthToken = "dummyphoneverifcation_id";
+  String phoneAuthToken = "";
   String phoneAuthMessage = "";
   String errorTitle = "";
   String errorMessage = "";
+  LatLng latLng;
 
   register() async {
     errorTitle = "";
@@ -62,6 +66,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
       setState(() {
         _phone.text = "+62" + _phone.text;
       });
+    }
+
+    if (latLng == null) {
+      Fluttertoast.showToast(msg: "Lokasi harus dipilih");
+      return;
     }
 
     if (phoneAuthToken.isEmptyOrNull) {
@@ -164,7 +173,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         "label": "Default Address",
         "given_name": _name.text,
         "country_code": "id",
-        "location": "-6.949634,107.571979",
+        "location": "${latLng?.latitude},${latLng.longitude}",
       });
       print("Posting Lokasi: ${response.body}");
       //todo handel response posting lokasi
@@ -174,11 +183,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
       // await AuthProvider.instance.saveLoginAuth(auth);
       setState(() {
         _dataState = DataStateSuccess();
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (ctx) => DashBoardScreen(),
-          ),
-        );
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (ctx) => DashBoardScreen()),
+            (Route<dynamic> predicate) {
+          return false;
+        });
       });
     } catch (error) {
       Fluttertoast.showToast(msg: "${error?.toString()}");
@@ -188,6 +197,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   void authenticatePhoneNumber() {
+    // if (1 != 2) {
+    //   dialogInputOtp("123");
+    //   return;
+    // }
     setState(() {
       _dataState = DataStateLoading();
     });
@@ -211,13 +224,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
           });
         }
       },
-      codeSent: (verificationId, forceResendingToken) {
-        print("codeSent");
+      codeSent: (verificationId, forceResendingToken) async {
+        print("codeSent verificationId:  $verificationId");
         if (mounted) {
           Fluttertoast.showToast(msg: "Kode SMS terkirim");
           setState(() {
             _dataState = DataStateSuccess();
           });
+          dialogInputOtp(verificationId);
         }
       },
       codeAutoRetrievalTimeout: (verificationId) {
@@ -225,6 +239,43 @@ class _RegisterScreenState extends State<RegisterScreen> {
         setState(() {
           _dataState = DataStateIdle();
         });
+      },
+    );
+  }
+
+  DataState phoneOtpInputState;
+
+  void dialogInputOtp(String verificationId) {
+    if (!mounted) return;
+    showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      // false = user must tap button, true = tap outside dialog
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: Text('Masukkan Kode OTP'),
+          content: PhoneOtpDialog(
+              verificationId: verificationId,
+              callback: (state) {
+                phoneOtpInputState = state;
+                if (state is DataStateSuccess<UserCredential>) {
+                  phoneAuthToken = verificationId;
+                  Future.microtask(() => register());
+                  Navigator.of(dialogContext).pop();
+                }
+              }),
+          actions: <Widget>[
+            Visibility(
+              visible: !(phoneOtpInputState is DataStateLoading),
+              child: TextButton(
+                child: Text('BATAL'),
+                onPressed: () {
+                  Navigator.of(dialogContext).pop(); // Dismiss alert dialog
+                },
+              ),
+            ),
+          ],
+        );
       },
     );
   }
@@ -557,15 +608,29 @@ class _RegisterScreenState extends State<RegisterScreen> {
             children: [
               Expanded(
                   child: Text(
-                "Lokasi (dummy -6.949634,107.571979)",
+                latLng == null
+                    ? "Pilih Lokasi"
+                    : "Lokasi: ${latLng?.latitude?.toStringAsFixed(5)} ${latLng?.longitude?.toStringAsFixed(5)}",
                 maxLines: 1,
-                style: TextStyle(overflow: TextOverflow.fade),
+                style: TextStyle(overflow: TextOverflow.clip),
               )),
               Icon(Icons.arrow_right, size: 20)
             ],
           ),
         ),
-        onTap: () {},
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => PickLocationScreen(
+                  callback: (latLng) {
+                    setState(() {
+                      this.latLng = latLng;
+                    });
+                  },
+                ),
+              ));
+        },
       ),
     );
   }
