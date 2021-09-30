@@ -67,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
   getProfile() async {
     SharedPreferences _prefs = await SharedPreferences.getInstance();
     String token = _prefs.getString('token');
-    if (token != "") {
+    if (token != "" && token != null) {
       String namex = _prefs.getString('name');
       print('name: $namex');
       setState(() {
@@ -76,6 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     } else {
       setState(() {
+        _prefs.setString('token', "");
         login = false;
       });
     }
@@ -127,7 +128,7 @@ class _HomeScreenState extends State<HomeScreen> {
           icon: Icon(
             Icons.notifications_rounded,
             color: Colors.white,
-            size: 32,
+            size: 24,
           ),
         ),
       ],
@@ -560,9 +561,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       title,
                       maxLines: 3,
                       overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontFamily: 'Montserrat',
-                      ),
+                      style: TextStyle(fontFamily: 'Montserrat', fontSize: 12),
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
@@ -570,7 +569,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         Icon(
                           Icons.calendar_today_outlined,
                           color: Colors.grey,
-                          size: 18,
+                          size: 10,
                         ),
                         SizedBox(
                           width: 3,
@@ -579,9 +578,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           date,
                           maxLines: 3,
                           overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            color: Colors.grey,
-                          ),
+                          style: TextStyle(color: Colors.grey, fontSize: 12),
                         ),
                         SizedBox(width: 5),
                       ],
