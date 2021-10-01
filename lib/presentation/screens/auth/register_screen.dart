@@ -307,51 +307,55 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
     return ModalProgressHUD(
       inAsyncCall: _dataState is DataStateLoading,
-      child: Expanded(
-        child: CustomScaffoldAuth(
-          body: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                TitleAuth('Registrasi'),
-                _buildPhoneForm(),
-                SizedBox(height: 20),
-                _buildEmailForm(),
-                SizedBox(height: 20),
-                _buildNameForm(),
-                SizedBox(height: 20),
-                _buildRentalNameForm(),
-                SizedBox(height: 20),
-                _buildUkuranBajuDropdown(),
-                SizedBox(height: 20),
-                _buildPasswordForm(),
-                SizedBox(height: 20),
-                _buildNoKtpForm(),
-                SizedBox(height: 20),
-                _buildLocationButton(),
-                SizedBox(height: 20),
-                PrimaryButton(
-                  onPressed: () {
-                    context.requestFocus(FocusNode());
-                    register();
-                  },
-                  text: 'Lanjutkan',
+      child: Column(
+        children: [
+          Expanded(
+            child: CustomScaffoldAuth(
+              body: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    TitleAuth('Registrasi'),
+                    _buildPhoneForm(),
+                    SizedBox(height: 20),
+                    _buildEmailForm(),
+                    SizedBox(height: 20),
+                    _buildNameForm(),
+                    SizedBox(height: 20),
+                    _buildRentalNameForm(),
+                    SizedBox(height: 20),
+                    _buildUkuranBajuDropdown(),
+                    SizedBox(height: 20),
+                    _buildPasswordForm(),
+                    SizedBox(height: 20),
+                    _buildNoKtpForm(),
+                    SizedBox(height: 20),
+                    _buildLocationButton(),
+                    SizedBox(height: 20),
+                    PrimaryButton(
+                      onPressed: () {
+                        context.requestFocus(FocusNode());
+                        register();
+                      },
+                      text: 'Lanjutkan',
+                    ),
+                    FooterAuth(
+                      text: 'Sudah punya Akun',
+                      buttonText: 'Masuk',
+                      onPressed: () {
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (ctx) => LoginScreen(),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
                 ),
-                FooterAuth(
-                  text: 'Sudah punya Akun',
-                  buttonText: 'Masuk',
-                  onPressed: () {
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        builder: (ctx) => LoginScreen(),
-                      ),
-                    );
-                  },
-                ),
-              ],
+              ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }
