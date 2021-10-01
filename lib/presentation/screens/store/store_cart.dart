@@ -30,6 +30,7 @@ class _StoreCartScreenState extends State<StoreCartScreen> {
     var height = MediaQuery.of(context).size.height;
     return CustomScaffold(
       appBar: [StoreHeaderComponent()],
+      backgroundHeigh: 200,
       body: Column(
         children: [
           InkWell(

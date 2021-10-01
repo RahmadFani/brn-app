@@ -19,6 +19,7 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
     var height = MediaQuery.of(context).size.height;
     return CustomScaffold(
       appBar: [StoreHeaderComponent()],
+      backgroundHeigh: 200,
       body: ListView(
         padding: EdgeInsets.all(20),
         children: [

@@ -82,6 +82,7 @@ class _StoreScreenState extends State<StoreScreen> {
     var height = MediaQuery.of(context).size.height;
     return CustomScaffold(
       appBar: [StoreHeaderComponent()],
+      backgroundHeigh: 200,
       body: ListView(
         // mainAxisAlignment: MainAxisAlignment.start,
         // crossAxisAlignment: CrossAxisAlignment.start,
@@ -295,9 +296,11 @@ class _StoreScreenState extends State<StoreScreen> {
             height: 20,
           ),
           Container(
-            height: height * 0.4,
+
             width: width,
             child: GridView.builder(
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
               padding: EdgeInsets.only(left: 15, right: 15),
               gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                   maxCrossAxisExtent: 200,

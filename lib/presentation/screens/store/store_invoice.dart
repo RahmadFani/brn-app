@@ -22,7 +22,8 @@ class _StoreInvoiceScreenState extends State<StoreInvoiceScreen> {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
     return CustomScaffold(
-      body: ListView(
+      backgroundHeigh: 200,
+      body: Column(
         children: [
           InkWell(
             onTap: () {
@@ -50,12 +51,13 @@ class _StoreInvoiceScreenState extends State<StoreInvoiceScreen> {
               ),
             ),
           ),
-          IntrinsicHeight(
-            child: Container(
+          Expanded(
+              child: SingleChildScrollView(
+            child: AnimatedContainer(
+              duration: Duration(milliseconds: 200),
               width: width,
               margin: EdgeInsets.all(20),
               // padding: EdgeInsets.all(10),
-              height: height * 0.9,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   color: Colors.white,
@@ -273,7 +275,7 @@ class _StoreInvoiceScreenState extends State<StoreInvoiceScreen> {
                 ],
               ),
             ),
-          ),
+          ))
         ],
       ),
     );
