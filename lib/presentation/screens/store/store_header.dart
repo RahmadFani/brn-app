@@ -61,7 +61,7 @@ class StoreHeaderComponent extends StatelessWidget {
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(5)),
                   child: Icon(
-                    Icons.favorite,
+                    Icons.favorite_border,
                     color: Color(0xFF192834),
                   ),
                 ),
@@ -82,7 +82,7 @@ class StoreHeaderComponent extends StatelessWidget {
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(5)),
                   child: Icon(
-                    Icons.shopping_bag_rounded,
+                    Icons.shopping_cart_outlined,
                     color: Color(0xFF192834),
                   ),
                 ),

@@ -54,7 +54,6 @@ class _StorePaymentScreenState extends State<StorePaymentScreen> {
             width: width,
             margin: EdgeInsets.all(20),
             padding: EdgeInsets.all(10),
-            height: height * 0.8,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 color: Colors.white,
@@ -66,6 +65,8 @@ class _StorePaymentScreenState extends State<StorePaymentScreen> {
                 ]),
             child: ListView.builder(
                 itemCount: 10,
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
                   return Container(
                     decoration: BoxDecoration(
