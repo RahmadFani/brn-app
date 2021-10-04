@@ -1,7 +1,10 @@
 import 'package:brn/config/constants.dart';
+import 'package:brn/config/storage.dart';
 import 'package:brn/model/category.dart';
 import 'package:brn/model/slider_model.dart';
 import 'package:brn/presentation/screens/auth/login_screen.dart';
+import 'package:brn/presentation/screens/store/helper/api_helper.dart';
+import 'package:brn/presentation/screens/store/models/product.dart';
 import 'package:brn/presentation/screens/store/owner/store_dasboard.dart';
 import 'package:brn/presentation/screens/store/store_detail.dart';
 import 'package:brn/presentation/screens/store/store_header.dart';
@@ -21,6 +24,9 @@ class StoreScreen extends StatefulWidget {
 class _StoreScreenState extends State<StoreScreen> {
   PageController bannerPageController = PageController();
   int _currentTab = 0;
+  bool isLoading = true;
+  List<ProductData> _listProduct = <ProductData>[];
+  String token = '';
 
   List<Category> mCategoryModel = [
     Category(
@@ -75,6 +81,28 @@ class _StoreScreenState extends State<StoreScreen> {
       thumb: 'https://cf.shopee.co.id/file/631519ad95a7857182206746d4c2361e',
     ),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    initData();
+  }
+
+  void initData() async {
+    await CallStoreAPI().getProducts().then((value) {
+      setState(() {
+        isLoading = false;
+        _listProduct = value;
+      });
+    });
+
+     DataStorage.instance.getToken().then((value){
+       print(value);
+       setState(() {
+         token  = value;
+       });
+     });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -303,7 +331,7 @@ class _StoreScreenState extends State<StoreScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(left:20.0),
+                          padding: const EdgeInsets.only(left: 20.0),
                           child: Text('Produk',
                               textAlign: TextAlign.left,
                               style: primaryTextStyle(
@@ -331,163 +359,199 @@ class _StoreScreenState extends State<StoreScreen> {
                     ),
                     Container(
                       width: width,
-                      child: GridView.builder(
-                        physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        padding: EdgeInsets.only(left: 15, right: 15),
-                        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                            maxCrossAxisExtent: 200,
-                            childAspectRatio: 1 / 1.3,
-                            crossAxisSpacing: 15,
-                            mainAxisSpacing: 15),
-                        itemCount: 20,
-                        itemBuilder: (context, index) {
-                          return InkWell(
-                            onTap: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (ctx) => StoreDetailScreen(),
-                                ),
-                              );
-                            },
-                            child: Container(
-                              height: 172,
-                              width: 140,
-                              padding: EdgeInsets.all(6),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(16),
-                                  color: Colors.white,
-                                  boxShadow: [
-                                    BoxShadow(
-                                        color: Colors.black.withOpacity(0.15),
-                                        offset: Offset(2, 4),
-                                        blurRadius: 10),
-                                  ]),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(10),
-                                    child:
-                                        Image.asset('assets/images/audi.jpeg'),
-                                  ),
-                                  Text('Mobil Audi',
-                                      textAlign: TextAlign.left,
-                                      style: primaryTextStyle(
-                                          size: 10, weight: FontWeight.w600)),
-                                  SizedBox(
-                                    height: 5,
-                                  ),
-                                  Text('Rp. 567.000.000',
-                                      textAlign: TextAlign.left,
-                                      style: primaryTextStyle(
-                                          size: 10, weight: FontWeight.w400)),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Icon(
-                                            Icons.calendar_today,
-                                            color: Colors.black45,
-                                            size: 10,
-                                          ),
-                                          SizedBox(
-                                            width: 5,
-                                          ),
-                                          Text('2021-09-19',
-                                              textAlign: TextAlign.left,
-                                              style: primaryTextStyle(
-                                                  size: 10,
-                                                  weight: FontWeight.w400)),
-                                        ],
+                      child: isLoading
+                          ? Center(
+                              child: CircularProgressIndicator(),
+                            )
+                          : GridView.builder(
+                              physics: NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              padding: EdgeInsets.only(left: 15, right: 15),
+                              gridDelegate:
+                                  SliverGridDelegateWithMaxCrossAxisExtent(
+                                      maxCrossAxisExtent: 200,
+                                      childAspectRatio: 1 / 1.7,
+                                      crossAxisSpacing: 15,
+                                      mainAxisSpacing: 15),
+                              itemCount: _listProduct.length,
+                              itemBuilder: (context, index) {
+                                return InkWell(
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (ctx) => StoreDetailScreen(_listProduct[index], token),
                                       ),
-                                      Row(
-                                        children: [
-                                          Container(
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(5),
-                                                gradient: LinearGradient(
-                                                    begin: Alignment.topCenter,
-                                                    end: Alignment.bottomCenter,
-                                                    colors: [
-                                                      Color(0xFFFB433D),
-                                                      Color(0xFFFB433D)
-                                                          .withOpacity(0.5),
-                                                    ]),
-                                                boxShadow: [
-                                                  BoxShadow(
-                                                      color: Colors.black
-                                                          .withOpacity(0.15),
-                                                      offset: Offset(2, 4),
-                                                      blurRadius: 10),
-                                                ]),
-                                            child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                children: [
-                                                  FittedBox(
-                                                    child: Icon(
-                                                      Icons.favorite_outlined,
-                                                      color: Colors.white,
-                                                    ),
-                                                  ),
-                                                ]),
+                                    );
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.all(16),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(16),
+                                        color: Colors.white,
+                                        boxShadow: [
+                                          BoxShadow(
+                                              color: Colors.black
+                                                  .withOpacity(0.15),
+                                              offset: Offset(2, 4),
+                                              blurRadius: 10),
+                                        ]),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          child: CachedNetworkImage(
+                                            imageUrl: API_SERVER_URL +
+                                                PRODUCT_IMAGE_URL +
+                                                _listProduct[index].imgSource,
+                                            progressIndicatorBuilder: (context,
+                                                    url, downloadProgress) =>
+                                                Container(
+                                              height: 172,
+                                              width: 172,
+                                              child: Center(
+                                                child:
+                                                    CircularProgressIndicator(
+                                                        value: downloadProgress
+                                                            .progress),
+                                              ),
+                                            ),
+                                            errorWidget:
+                                                (context, url, error) => Center(
+                                                    child: Image.asset(
+                                              'assets/images/audi.jpeg',
+                                              fit: BoxFit.cover,
+                                              height: 172,
+                                              width: 172,
+                                            )),
                                           ),
-                                          Container(
-                                            margin: EdgeInsets.only(left: 5),
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(5),
-                                                gradient: LinearGradient(
-                                                    begin: Alignment.topCenter,
-                                                    end: Alignment.bottomCenter,
-                                                    colors: [
-                                                      Color(0xFF3491D2),
-                                                      Color(0xFF3491D2)
-                                                          .withOpacity(0.5),
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Text(_listProduct[index].title ?? '-',
+                                            textAlign: TextAlign.left,
+                                            style: primaryTextStyle(
+                                                size: 10,
+                                                weight: FontWeight.w600)),
+                                        SizedBox(
+                                          height: 2,
+                                        ),
+                                        Text(
+                                            currencyFormat.format(int.parse(
+                                                _listProduct[index].dispPrice)),
+                                            textAlign: TextAlign.left,
+                                            style: primaryTextStyle(
+                                                size: 10,
+                                                weight: FontWeight.w400)),
+                                        SizedBox(
+                                          height: 2,
+                                        ),
+                                        Row(
+                                          children: [
+                                            Icon(
+                                              Icons.calendar_today,
+                                              color: Colors.black45,
+                                              size: 10,
+                                            ),
+                                            SizedBox(
+                                              width: 5,
+                                            ),
+                                            Text('2021-09-19',
+                                                textAlign: TextAlign.left,
+                                                style: primaryTextStyle(
+                                                    size: 10,
+                                                    weight: FontWeight.w400)),
+                                          ],
+                                        ),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.end,
+                                          children: [
+                                            Container(
+                                              height: 30,
+                                              width: 30,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(5),
+                                                  gradient: LinearGradient(
+                                                      begin:
+                                                          Alignment.topCenter,
+                                                      end: Alignment
+                                                          .bottomCenter,
+                                                      colors: [
+                                                        Color(0xFFFB433D),
+                                                        Color(0xFFFB433D)
+                                                            .withOpacity(0.5),
+                                                      ]),
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                        color: Colors.black
+                                                            .withOpacity(0.15),
+                                                        offset: Offset(2, 4),
+                                                        blurRadius: 10),
+                                                  ]),
+                                              child: Center(
+                                                child: Icon(
+                                                  Icons.favorite_outlined,
+                                                  color: Colors.white,
+                                                  size: 20,
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(width:5),
+                                            InkWell(
+                                              onTap: (){
+                                                CallStoreAPI().addToCart(
+                                                  _listProduct[index].id, _listProduct[index].hasColor, _listProduct[index].hasSize, token).then((value){
+                                                    if (value) {
+                                                      Fluttertoast.showToast(msg: '${_listProduct[index].title} added to cart.');
+                                                    } else {
+                                                      Fluttertoast.showToast(msg: 'Failed add product to cart, try again');
+                                                    }
+                                                  });
+                                              },
+                                              child: Container(
+                                                height: 30,
+                                                width: 30,
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(5),
+                                                    gradient: LinearGradient(
+                                                        begin:
+                                                            Alignment.topCenter,
+                                                        end: Alignment
+                                                            .bottomCenter,
+                                                        colors: [
+                                                          Color(0xFF3491D2),
+                                                          Color(0xFF3491D2)
+                                                              .withOpacity(0.5),
+                                                        ]),
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                          color: Colors.black
+                                                              .withOpacity(0.15),
+                                                          offset: Offset(2, 4),
+                                                          blurRadius: 10),
                                                     ]),
-                                                boxShadow: [
-                                                  BoxShadow(
-                                                      color: Colors.black
-                                                          .withOpacity(0.15),
-                                                      offset: Offset(2, 4),
-                                                      blurRadius: 10),
-                                                ]),
-                                            child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                children: [
-                                                  FittedBox(
-                                                    child: Icon(
-                                                      Icons.shopping_cart,
-                                                      color: Colors.white,
-                                                    ),
-                                                  ),
-                                                ]),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
+                                                child: Icon(
+                                                  Icons.shopping_cart,
+                                                  color: Colors.white,
+                                                  size: 20,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ],
-                              ),
+                                );
+                              },
                             ),
-                          );
-                        },
-                      ),
                     ),
                   ],
                 ),
