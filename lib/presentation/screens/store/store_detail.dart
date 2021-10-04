@@ -1,19 +1,26 @@
 import 'package:brn/config/constants.dart';
+import 'package:brn/presentation/screens/store/helper/api_helper.dart';
+import 'package:brn/presentation/screens/store/models/product.dart';
 import 'package:brn/presentation/screens/store/store_header.dart';
-import 'package:brn/presentation/widgets/custom_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 class StoreDetailScreen extends StatefulWidget {
-  const StoreDetailScreen({Key key}) : super(key: key);
+  ProductData _productData = new ProductData();
+  String token;
+  StoreDetailScreen(this._productData, this.token);
 
   @override
-  _StoreDetailScreenState createState() => _StoreDetailScreenState();
+  _StoreDetailScreenState createState() =>
+      _StoreDetailScreenState(this._productData, this.token);
 }
 
 class _StoreDetailScreenState extends State<StoreDetailScreen> {
+  ProductData _productData = new ProductData();
+  String token;
+  _StoreDetailScreenState(this._productData, this.token);
   bool ulasan = false;
   @override
   Widget build(BuildContext context) {
@@ -41,7 +48,7 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal:20.0),
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -60,11 +67,11 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
                     ),
                   ),
                   SizedBox(height: 10),
-                  Text('Mobil Kijang',
+                  Text(_productData.title,
                       textAlign: TextAlign.left,
                       style:
                           primaryTextStyle(size: 24, weight: FontWeight.bold)),
-                  Text('Rp. 200.000.000',
+                  Text(currencyFormat.format(int.parse(_productData.dispPrice)),
                       textAlign: TextAlign.left,
                       style:
                           primaryTextStyle(size: 18, weight: FontWeight.bold)),
@@ -195,9 +202,9 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
                   ),
                   ulasan != true
                       ? Container(
-                        padding: EdgeInsets.all(5),
+                          padding: EdgeInsets.all(5),
                           child: Text(
-                            "kijang inova (E/J), etios valco, grand avega, new saga, link, new galant, waja, familia, odyssey, new laser, grandis, yaris, new vios, previa, new lancer, wish, laser sonic, gala, champ, new crv, hrv, new civic, accent, verna, cakra, excel, matrix, mazda2, mazda3, mazda 5 dll Note : (pengiriman hanya bisa lewat grab / gojek )",
+                            _productData.description,
                             textAlign: TextAlign.justify,
                             style: TextStyle(
                                 color: Colors.black87,
@@ -210,13 +217,14 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
                       : Container(
                           width: width,
                           child: ListView.builder(
-                            padding: EdgeInsets.all(0),
+                              padding: EdgeInsets.all(0),
                               itemCount: 10,
                               shrinkWrap: true,
                               physics: NeverScrollableScrollPhysics(),
                               itemBuilder: (context, index) {
                                 return Container(
-                                  margin: EdgeInsets.only(top: 10, left: 5,right: 5),
+                                  margin: EdgeInsets.only(
+                                      top: 10, left: 5, right: 5),
                                   width: width,
                                   height: 120,
                                   decoration: BoxDecoration(
@@ -225,7 +233,8 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
                                               width: 1,
                                               color: Colors.black54))),
                                   child: Row(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: [
                                       ClipRRect(
                                           borderRadius:
@@ -357,31 +366,50 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
                       color: Colors.white,
                       size: 20,
                     )),
-                Container(
-                    height: 46,
-                    width: 46,
-                    margin: EdgeInsets.only(left: 10),
-                    alignment: Alignment(0, 0),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(46),
-                        gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              Color(0xFF334263),
-                              Color(0xFF1D2C3A),
-                            ]),
-                        boxShadow: [
-                          BoxShadow(
-                              color: Colors.black.withOpacity(0.15),
-                              offset: Offset(2, 4),
-                              blurRadius: 10),
-                        ]),
-                    child: Icon(
-                      Icons.shopping_cart,
-                      color: Colors.white,
-                      size: 20,
-                    )),
+                InkWell(
+                  onTap: () {
+                    CallStoreAPI()
+                        .addToCart(
+                            _productData.id,
+                            _productData.hasColor,
+                            _productData.hasSize,
+                            token)
+                        .then((value) {
+                      if (value) {
+                        Fluttertoast.showToast(
+                            msg: '${_productData.title} added to cart.');
+                      } else {
+                        Fluttertoast.showToast(
+                            msg: 'Failed add product to cart, try again');
+                      }
+                    });
+                  },
+                  child: Container(
+                      height: 46,
+                      width: 46,
+                      margin: EdgeInsets.only(left: 10),
+                      alignment: Alignment(0, 0),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(46),
+                          gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                                Color(0xFF334263),
+                                Color(0xFF1D2C3A),
+                              ]),
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.black.withOpacity(0.15),
+                                offset: Offset(2, 4),
+                                blurRadius: 10),
+                          ]),
+                      child: Icon(
+                        Icons.shopping_cart,
+                        color: Colors.white,
+                        size: 20,
+                      )),
+                ),
               ],
             )),
       )

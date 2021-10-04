@@ -379,7 +379,7 @@ class _StoreScreenState extends State<StoreScreen> {
                                   onTap: () {
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
-                                        builder: (ctx) => StoreDetailScreen(),
+                                        builder: (ctx) => StoreDetailScreen(_listProduct[index], token),
                                       ),
                                     );
                                   },
