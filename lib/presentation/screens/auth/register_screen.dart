@@ -518,7 +518,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   value: s,
                 ))
             .toList(),
-        borderRadius: BorderRadius.circular(20),
+        //borderRadius: BorderRadius.circular(20), /// Check
         isExpanded: true,
         underline: SizedBox.shrink(),
       ),
@@ -616,7 +616,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ? "Pilih Lokasi"
                     : "Lokasi: ${latLng?.latitude?.toStringAsFixed(5)} ${latLng?.longitude?.toStringAsFixed(5)}",
                 maxLines: 1,
-                style: TextStyle(overflow: TextOverflow.clip),
+                //style: TextStyle(overflow: TextOverflow.clip), /// check
               )),
               Icon(Icons.arrow_right, size: 20)
             ],

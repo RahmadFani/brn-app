@@ -180,7 +180,7 @@ class _DonationDetailScreenState extends State<DonationDetailScreen> {
                   showCustomModalBottomSheet(
                     context,
                     expanded: false,
-                    body: StartDonation(),
+                    body: StartDonation(id: widget.id),
                   );
                 },
                 text: 'Donasi Sekarang',
